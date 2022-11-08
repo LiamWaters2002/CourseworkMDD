@@ -30,7 +30,7 @@ import com.google.android.gms.tasks.Task;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap googleMap;
     private ActivityMapsBinding binding;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -55,7 +55,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+        this.googleMap = googleMap;
 
         displayUserCurrentLocation();
     }
@@ -94,41 +94,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @SuppressLint("MissingPermission")
     private void displayUserCurrentLocation() {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(locationRequest == null){
-                locationRequest = LocationRequest.create();
-                if(locationRequest != null){
-                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                    locationRequest.setInterval(10000);
-                    locationRequest.setFastestInterval(500);
-
-                    LocationCallback locationCallback = new LocationCallback() {
-
-                        @Override
-                        public void onLocationResult(@NonNull LocationResult locationResult) {
-                            super.onLocationResult(locationResult);
-
-                            displayUserCurrentLocation();
-                        }
-                    };
-
-                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-
-                }
-            }
+//            googleMap.clear();
+//            if(locationRequest == null){
+//                locationRequest = LocationRequest.create();
+//                if(locationRequest != null){
+//                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//                    locationRequest.setInterval(10000);
+//                    locationRequest.setFastestInterval(500);
+//
+//                    LocationCallback locationCallback = new LocationCallback() {
+//
+//                        @Override
+//                        public void onLocationResult(@NonNull LocationResult locationResult) {
+//                            super.onLocationResult(locationResult);
+//
+//                            displayUserCurrentLocation();
+//                        }
+//                    };
+//
+//                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+//
+//                }
+//            }
+            googleMap.setMyLocationEnabled(true);
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     Location location = task.getResult();
                     if(location != null){
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        mMap.addMarker(new MarkerOptions().position(latLng).title("Your current location"));
+//                        googleMap.addMarker(new MarkerOptions().position(latLng).title("Your current location"))
+
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f);//zoom in to that distance
-                        mMap.moveCamera(cameraUpdate);
+                        googleMap.moveCamera(cameraUpdate);
+                        displayUserCurrentLocation();
                     }
                     else{
-                        //Cannot use this context, because the method overrides a function within another class.
+                        //Cannot use just "this", it would refer to the OnCompleteListener class and not MapsActivity.
                         Toast.makeText(MapsActivity.this, "Unable to get your location. Try again", Toast.LENGTH_SHORT).show();
                     }
+
                 }
             });
         }
