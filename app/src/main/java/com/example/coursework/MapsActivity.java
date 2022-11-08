@@ -94,29 +94,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @SuppressLint("MissingPermission")
     private void displayUserCurrentLocation() {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-//            googleMap.clear();
-//            if(locationRequest == null){
-//                locationRequest = LocationRequest.create();
-//                if(locationRequest != null){
-//                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//                    locationRequest.setInterval(10000);
-//                    locationRequest.setFastestInterval(500);
-//
-//                    LocationCallback locationCallback = new LocationCallback() {
-//
-//                        @Override
-//                        public void onLocationResult(@NonNull LocationResult locationResult) {
-//                            super.onLocationResult(locationResult);
-//
-//                            displayUserCurrentLocation();
-//                        }
-//                    };
-//
-//                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
-//
-//                }
-//            }
+            googleMap.clear();
+            if(locationRequest == null){
+                locationRequest = LocationRequest.create();
+                if(locationRequest != null){
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                    locationRequest.setInterval(1);
+
+                    LocationCallback locationCallback = new LocationCallback() {
+
+                        @Override
+                        public void onLocationResult(@NonNull LocationResult locationResult) {
+                            super.onLocationResult(locationResult);
+
+                            displayUserCurrentLocation();
+                        }
+                    };
+
+                    fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, null);
+
+                }
+            }
             googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(false); //Bad UI design
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
@@ -127,7 +127,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f);//zoom in to that distance
                         googleMap.moveCamera(cameraUpdate);
-                        displayUserCurrentLocation();
                     }
                     else{
                         //Cannot use just "this", it would refer to the OnCompleteListener class and not MapsActivity.
