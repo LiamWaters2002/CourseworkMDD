@@ -3,12 +3,14 @@ package com.example.coursework;
 import static com.example.coursework.BuildConfig.MAPS_API_KEY;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,9 +43,14 @@ import com.example.coursework.databinding.ActivityMapsBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -71,6 +78,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
 
         txtSearch = (EditText) findViewById(R.id.txtSearch);
+        txtSearch.setFocusable(false);
+        txtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Place.Field> placeList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeList).build(MapsActivity.this);
+
+                startActivityForResult(intent, 100);
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -78,6 +96,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         setupLocationServices();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100 && resultCode == RESULT_OK){
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            txtSearch.setText(place.getAddress());
+            getLocationFromSearch();
+            //.setText(String.format("Name" + place.getName()) // Gets name of place
+            //.setText(String.valueOf(place.getLatLng()))  //Gets latlng
+        }
     }
 
     /**
@@ -93,28 +123,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         Toast.makeText(this, Boolean.toString(clickedViewCurrentLocation), Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Listener which checks whether
-     */
-    private void searchInputEvent(){
-        txtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH //search operation
-                        || actionId == EditorInfo.IME_ACTION_DONE //Done operation
-                        || keyEvent.getAction()== KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction()== KeyEvent.KEYCODE_ENTER){
-
-                    //Execute searching method here...
-                    getLocationFromSearch();
-
-
-                }
-                return false;
-            }
-        });
     }
 
     private void getLocationFromSearch(){
@@ -147,7 +155,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         this.googleMap = googleMap;
 
         displayUserCurrentLocation();
-        searchInputEvent();
     }
 
     /**
