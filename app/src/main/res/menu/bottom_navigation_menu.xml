@@ -3,11 +3,11 @@
 
     <item android:title="Saved"
         android:icon="@drawable/ic_baseline_location_on_24"
-        android:id="@+id/saved"/>
+        android:id="@+id/savedFragment"/>
     <item android:title="Map"
         android:icon="@drawable/ic_baseline_map_24"
-        android:id="@+id/map"/>
+        android:id="@+id/mapsFragment"/>
     <item android:title="Weather"
     android:icon="@drawable/ic_baseline_wb_sunny_24"
-        android:id="@+id/weather"/>
+        android:id="@+id/weatherFragment"/>
 </menu>

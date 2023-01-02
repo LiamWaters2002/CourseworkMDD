@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="ic_search" type="id" />
+    <item name="host_navigation_fragment" type="id" />
+    <item name="FragmentContainerView" type="id" />
+    <item name="navigationHostFragment" type="id" />
 </resources>

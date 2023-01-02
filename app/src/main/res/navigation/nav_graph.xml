@@ -3,25 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/savedFragment">
 
-    <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.coursework.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-        <action
-            android:id="@+id/action_FirstFragment_to_mapsFragment"
-            app:destination="@id/mapsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.coursework.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second"/>
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.coursework.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/savedFragment"
+        android:name="com.example.coursework.SavedFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_saved" />
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="com.example.coursework.WeatherFragment"
+        android:label="fragment_second"
+        tools:layout="@layout/fragment_weather" />
 </navigation>
