@@ -2,6 +2,8 @@ package com.example.coursework;
 
 import android.os.Bundle;
 
+import com.example.coursework.R;
+import com.example.coursework.databinding.ActivityMainBinding;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;

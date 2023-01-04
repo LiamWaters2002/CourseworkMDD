@@ -1,4 +1,4 @@
-package com.example.coursework;
+package com.mdd.coursework;
 
 import org.junit.Test;
 

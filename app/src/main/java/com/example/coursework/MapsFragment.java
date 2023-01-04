@@ -29,8 +29,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.coursework.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationResult;
@@ -42,6 +44,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +53,7 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.example.coursework.LocationDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,7 +63,9 @@ import java.util.List;
 public class MapsFragment extends Fragment {
 
     private EditText txtSearch;
+    private Marker markerSelected;
     private Button btnCurrentUserLocation;
+    private RelativeLayout btnAdd;
     private boolean clickedViewCurrentLocation;//Use this for button click
 
     private FusedLocationProviderClient fusedLocationProviderClient;
@@ -99,10 +105,23 @@ public class MapsFragment extends Fragment {
         clickedViewCurrentLocation = false;
 
         btnCurrentUserLocation = getView().findViewById(R.id.current_user_location);
+        btnAdd = getView().findViewById(R.id.relative_layout_button_add);
+
         btnCurrentUserLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 clickedViewCurrentLocation();
+            }
+        });
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(markerSelected != null){
+                    addToDatabase(markerSelected);
+                }
+
             }
         });
 
@@ -127,6 +146,19 @@ public class MapsFragment extends Fragment {
         setupLocationServices();
     }
 
+    private void addToDatabase(Marker markerSelected) {
+        LocationDatabase database = new LocationDatabase(getContext());
+
+        LatLng position = markerSelected.getPosition();
+
+        String name = markerSelected.getTitle();
+        double latitude = position.latitude;
+        double longitude = position.longitude;
+        String weatherPreference = "This needs to be implemented";
+        int priceRange = 0;
+        database.addLocation(name, latitude, longitude, weatherPreference, priceRange);
+    }
+
     /**
      * When user clicks on "My Current Location" button
      */
@@ -140,6 +172,7 @@ public class MapsFragment extends Fragment {
 
         Toast.makeText(getContext(), Boolean.toString(clickedViewCurrentLocation), Toast.LENGTH_SHORT).show();
     }
+
 
 
     /**
@@ -168,6 +201,37 @@ public class MapsFragment extends Fragment {
     @SuppressLint("MissingPermission")
     private void displayUserCurrentLocation(GoogleMap googleMap) {
         this.googleMap = googleMap;
+
+        /**
+         * Detects when user clicks on a map marker, save it's location
+         */
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
+
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                markerSelected = marker;
+                marker.showInfoWindow();
+                Toast.makeText(getContext(), "Marker Selected", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        /**
+         * Detects when user clicks on the map, off from the marker.
+         */
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener(){
+
+            @Override
+            public void onMapClick(@NonNull LatLng latLng) {
+                if(!markerSelected.equals(null)){
+                    Toast.makeText(getContext(), "Marker Deselected", Toast.LENGTH_SHORT).show();
+                    markerSelected.hideInfoWindow();
+                }
+
+            }
+        });
+
+
         if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             //googleMap.clear();
             if(locationRequest == null){
@@ -197,7 +261,7 @@ public class MapsFragment extends Fragment {
                     if(location != null){
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                         if(clickedViewCurrentLocation){
-                            setCameraPosition(latLng, "");
+                            setCameraPosition(latLng, null);
                         }
                     }
                     else{
@@ -225,35 +289,45 @@ public class MapsFragment extends Fragment {
         }
     }
 
+
     private void getLocationFromSearch() {
         String searchInput = txtSearch.getText().toString();
         Geocoder geocoder = new Geocoder(getContext());
-        List<Address> list = new ArrayList<>();
+        List<Address> addressList = new ArrayList<>();
         try {
-            list = geocoder.getFromLocationName(searchInput, 1);
+            addressList = geocoder.getFromLocationName(searchInput, 1);
         } catch (IOException e) {
             Log.e("Error", e.getMessage());
         }
 
-        if (list.size() > 0) {
-            Address address = list.get(0);//Get first location from the list
+        if (addressList.size() > 0) {
+            Address address = addressList.get(0);//Get first location from the addressList
 
             Log.d("Result", "Found a location: " + address.toString());
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
             clickedViewCurrentLocation = false;
-            setCameraPosition(latLng, address.getAddressLine(0));
-
+            //setCameraPosition(latLng, address.getAddressLine(0));
+            setCameraPosition(latLng, address);
         }
     }
 
-    public void setCameraPosition(LatLng latLng, String title){
+    public void setCameraPosition(LatLng latLng, Address address){
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f);//zoom in to that distance
         googleMap.moveCamera(cameraUpdate);
-        if(!title.equals("")){
+        if(address != null){
             googleMap.clear();
             hideKeyboard();
-            MarkerOptions markerOptions = new MarkerOptions().position(latLng).title(title);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng).title(address.getAddressLine(0));
+            markerOptions.position(latLng).snippet(
+                    "Administrative Area: " + address.getAdminArea() + "\n" +
+                            "City: " + address.getLocality() + "\n" +
+                            "Post Code:" + address.getPostalCode()  + "\n" +
+                            "Phone:" + address.getPostalCode()  + "\n" +
+                            "Website:" + address.getPostalCode()
+            );
             googleMap.addMarker(markerOptions);
+
         }
     }
 
