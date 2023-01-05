@@ -154,9 +154,9 @@ public class MapsFragment extends Fragment {
         String name = markerSelected.getTitle();
         double latitude = position.latitude;
         double longitude = position.longitude;
-        String weatherPreference = "This needs to be implemented";
-        int priceRange = 0;
-        database.addLocation(name, latitude, longitude, weatherPreference, priceRange);
+        String weatherPreference = "Weather preference needs to be implemented";
+        String timePreference = "Time preference needs to be implemented";
+        database.addLocation(name, latitude, longitude, weatherPreference, timePreference);
     }
 
     /**
