@@ -13,38 +13,61 @@ android:layout_width="match_parent"
 android:layout_height="match_parent">
 
 
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MapsActivity" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/white"
-        android:elevation="10dp"
-        >
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ic_search"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_centerVertical="true"
+        <Button
+            android:id="@+id/btnAttractions"
+            android:layout_width="140dp"
+            android:layout_height="70dp"
+            android:layout_alignTop="@+id/searchRelativeLayout"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_search"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="50dp"
+            android:text="Attractions"
+            android:gravity="bottom"
+            android:textAlignment="textEnd" />
 
-        <EditText
-            android:id="@+id/txtSearch"
+        <RelativeLayout
+            android:id="@+id/searchRelativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/ic_search"
-            android:background="@null"
-            android:hint="Enter a location you want to visit..."
-            android:imeOptions="actionSearch"
-            android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/white"
+            android:elevation="10dp">
+
+            <ImageView
+                android:id="@+id/ic_search"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_search" />
+
+            <EditText
+                android:id="@+id/txtSearch"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/ic_search"
+                android:background="@null"
+                android:hint="Enter a location you want to visit..."
+                android:imeOptions="actionSearch"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
 
 
+        </RelativeLayout>
     </RelativeLayout>
 
     <Button
@@ -57,13 +80,6 @@ android:layout_height="match_parent">
     android:layout_marginBottom="148dp"
     android:text="My Current Location"/>
 
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
 
     <RelativeLayout
         android:id="@+id/relative_layout_button_add"
@@ -96,7 +112,7 @@ android:layout_height="match_parent">
                 android:layout_below="@id/button_icon"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="Add"
+                android:text="Save"
                 android:textColor="@color/white"
                 android:textSize="27sp" />
 

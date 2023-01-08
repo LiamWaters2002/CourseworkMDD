@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coursework.databinding.FragmentSavedBinding;
@@ -21,6 +22,7 @@ public class SavedFragment extends Fragment {
     private FragmentSavedBinding binding;
 
     RecyclerView recyclerView;
+    SavedRecyclerViewAdapter savedRecyclerViewAdapter;
 
     LocationDatabase locationDatabase;
 
@@ -30,8 +32,6 @@ public class SavedFragment extends Fragment {
     ArrayList<String> longitudeList;
     ArrayList<String> timePreferenceList;
     ArrayList<String> weatherPreferenceList;
-
-
 
     @Override
     public View onCreateView(
@@ -49,6 +49,15 @@ public class SavedFragment extends Fragment {
         timePreferenceList = new ArrayList<>();
         weatherPreferenceList = new ArrayList<>();
 
+        recyclerView = binding.recyclerViewDisplay;
+
+        displayDatabase();
+
+        savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(getContext(), idList, locationNameList, latitudeList, longitudeList, timePreferenceList, weatherPreferenceList);
+        recyclerView.setAdapter(savedRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
 
         return binding.getRoot();
     }
@@ -60,7 +69,7 @@ public class SavedFragment extends Fragment {
     }
 
     void displayDatabase(){
-        Cursor cursor = locationDatabase.readAllData();
+        Cursor cursor = locationDatabase.readDatabase();
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }

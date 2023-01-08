@@ -17,7 +17,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
     private String COLUMN_NAME = "name";
     private String COLUMN_LATITUDE = "latitude";
     private String COLUMN_LONGITUDE = "Longitude";
-    private String COLUMN_TIME_PREFERENCE = "time_preference";
+    private String COLUMN_PRIORITY = "priority";
     private String COLUMN_WEATHER_PREFERENCE = "weather_preference";
 
 
@@ -36,7 +36,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
                 COLUMN_NAME + " TEXT, " +
                 COLUMN_LATITUDE + " REAL, " +
                 COLUMN_LONGITUDE + " REAL, " +
-                COLUMN_TIME_PREFERENCE + " TEXT, " +
+                COLUMN_PRIORITY + " INTEGER, " +
                 COLUMN_WEATHER_PREFERENCE + " TEXT);";
 
         sqLiteDatabase.execSQL(query);
@@ -47,14 +47,14 @@ public class LocationDatabase extends SQLiteOpenHelper {
         //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, String timePreference){
+    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_NAME, locationName);
         contentValues.put(COLUMN_LATITUDE, latitude);
         contentValues.put(COLUMN_LONGITUDE, longitude);
-        contentValues.put(COLUMN_TIME_PREFERENCE, timePreference);
+        contentValues.put(COLUMN_PRIORITY, priority);
         contentValues.put(COLUMN_WEATHER_PREFERENCE, weatherPreference);
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
@@ -65,10 +65,8 @@ public class LocationDatabase extends SQLiteOpenHelper {
         }
     }
 
-    void readDatabase(){}
-
-    Cursor readAllData(){
-        String query = "SELECT * FROM + " + TABLE_NAME;
+    Cursor readDatabase(){
+        String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -77,5 +75,4 @@ public class LocationDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
-
 }
