@@ -2,12 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Saved"
-        android:icon="@drawable/ic_baseline_location_on_24"
+        android:icon="@drawable/ic_baseline_bookmark_24"
         android:id="@+id/savedFragment"/>
-    <item android:title="Map"
+    <item android:title="Nearby"
         android:icon="@drawable/ic_baseline_map_24"
-        android:id="@+id/mapsFragment"/>
-    <item android:title="Weather"
+        android:id="@+id/exploreFragment"/>
+    <item android:title="Travel"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:id="@+id/travelFragment"/>
+    <item android:title="Suggest"
     android:icon="@drawable/ic_baseline_wb_sunny_24"
         android:id="@+id/weatherFragment"/>
+
 </menu>

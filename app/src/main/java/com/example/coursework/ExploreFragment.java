@@ -1,17 +1,8 @@
 package com.example.coursework;
 
-
-
-
-
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;
 import static com.example.coursework.BuildConfig.MAPS_API_KEY;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,7 +12,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,11 +19,19 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -43,38 +41,32 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
 import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapsFragment extends Fragment {
+public class ExploreFragment extends Fragment {
 
     private EditText txtSearch;
     private Marker markerSelected;
-    private Button btnCurrentUserLocation;
+    private Button btnSwitchView;
     private RelativeLayout btnAdd;
-    private Button btnAttractions;
+    private LinearLayout btnAttractions;
+    private LinearLayout btnRestaurants;
+    private LinearLayout btnBars;
+    private LinearLayout btnNightClubs;
+    private ImageView btnRemove;
 
     private boolean clickedViewCurrentLocation;//Use this for button click
 
@@ -105,7 +97,7 @@ public class MapsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_maps, container, false);
+        return inflater.inflate(R.layout.fragment_explore, container, false);
     }
 
     @Override
@@ -113,22 +105,29 @@ public class MapsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Places.initialize(getContext(), MAPS_API_KEY);
 
-        clickedViewCurrentLocation = false;
+        clickedViewCurrentLocation = true;
 
-        btnCurrentUserLocation = getView().findViewById(R.id.current_user_location);
         btnAdd = getView().findViewById(R.id.relative_layout_button_add);
         btnAttractions = getView().findViewById(R.id.btnAttractions);
+        btnRestaurants = getView().findViewById(R.id.btnRestaurants);
+        btnBars = getView().findViewById(R.id.btnBars);
+        btnNightClubs = getView().findViewById(R.id.btnNightClub);
+        btnRemove = getView().findViewById(R.id.ic_remove);
 
-        btnCurrentUserLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clickedViewCurrentLocation();
-            }
-        });
+//        btnRemove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                clickedRemove();
+//            }
+//        });
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+                View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
+                bottomSheetDialog.setContentView(bottomSheetDialogView);
+                bottomSheetDialog.show();
 
                 if(markerSelected != null){
                     addToDatabase(markerSelected);
@@ -145,22 +144,46 @@ public class MapsFragment extends Fragment {
             }
         });
 
-        txtSearch = (EditText) getView().findViewById(R.id.txtSearch);
-        txtSearch.setFocusable(false);
-        txtSearch.setOnClickListener(new View.OnClickListener() {
+        btnBars.setOnClickListener(new View.OnClickListener(){
+
             @Override
             public void onClick(View view) {
-                List<Place.Field> placeList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeList).build(getActivity());
-
-                startActivityForResult(intent, 100);
+                clickedPlaceType("bar");
             }
         });
 
+        btnRestaurants.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                clickedPlaceType("restaurant");
+            }
+        });
+
+        btnNightClubs.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                clickedPlaceType("night_club");
+            }
+        });
+
+//        txtSearch = (EditText) getView().findViewById(R.id.txtSearch);
+//        txtSearch.setFocusable(false);
+//        txtSearch.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                List<Place.Field> placeList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+//
+//                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, placeList).build(getActivity());
+//
+//                startActivityForResult(intent, 100);
+//            }
+//        });
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-       if (mapFragment != null) {
+        if (mapFragment != null) {
             mapFragment.getMapAsync(onMapReadyCallback);
         }
         setupLocationServices();
@@ -183,13 +206,11 @@ public class MapsFragment extends Fragment {
     /**
      * When user clicks on "My Current Location" button
      */
-    public void clickedViewCurrentLocation(){
-        if(clickedViewCurrentLocation){
-            clickedViewCurrentLocation = false;
-        }
-        else{
-            clickedViewCurrentLocation = true;
-        }
+    public void clickedRemove(){
+        clickedViewCurrentLocation = true;
+        googleMap.clear();
+        txtSearch.setText("");
+        hideKeyboard();
 
         Toast.makeText(getContext(), Boolean.toString(clickedViewCurrentLocation), Toast.LENGTH_SHORT).show();
     }
@@ -216,6 +237,10 @@ public class MapsFragment extends Fragment {
         }
     }
 
+    /**
+     * Add OnClickListeners for the map's marker
+     * @param googleMap
+     */
     private void setupInteractiveMap(GoogleMap googleMap){
         this.googleMap = googleMap;
 
@@ -306,6 +331,12 @@ public class MapsFragment extends Fragment {
 
     }
 
+    /**
+     * Used when a location has been
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -382,6 +413,7 @@ public class MapsFragment extends Fragment {
 
     @SuppressLint("MissingPermission")
     private void clickedPlaceType(String type) {
+        googleMap.clear();
 
         Place.Type placeType;
 
@@ -403,50 +435,5 @@ public class MapsFragment extends Fragment {
 
         FetchUrlData fetchUrlData = new FetchUrlData();
         fetchUrlData.execute(dataFetch);
-
-
-//        LatLngBounds latLngBounds = googleMap.getProjection().getVisibleRegion().latLngBounds;
-//
-//        PlacesClient placesClient = Places.createClient(getContext());
-//        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-//
-//        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.builder(fieldList).build();
-//
-//        LatLng cameraPosition = googleMap.getCameraPosition().target;
-//
-//        String urlTest = "https://maps.googleapis.com/maps/api/place/nearbysearch/json" +
-//                "?location=" + cameraPosition.latitude + "," + cameraPosition.longitude
-//                + "&radius=5000" + "&types=" + type + "&sensor=true" + "&key=" + MAPS_API_KEY;
-//
-//
-//
-//        FindCurrentPlaceRequest request = FindCurrentPlaceRequest.builder(fieldList).build();
-//
-//        try{
-//            if(ContextCompat.checkSelfPermission(requireActivity(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-//                Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(findCurrentPlaceRequest);
-//                placeResponse.addOnCompleteListener(task -> {
-//                    if(task.isSuccessful()){
-//                        FindCurrentPlaceResponse findCurrentPlaceResponse = task.getResult();
-//                        List<PlaceLikelihood> locationsList = findCurrentPlaceResponse.getPlaceLikelihoods();
-//
-////                        Toast.makeText(getContext(), new Integer(locationsList.size()).toString(), Toast.LENGTH_SHORT).show();
-//
-//                        for(PlaceLikelihood placeLikelihood : locationsList){
-//                            Place place = placeLikelihood.getPlace();
-//                            LatLng latLng = place.getLatLng();
-//                            //String name = place.getName();
-//                            String address = place.getAddress();
-//
-//                            setMarkerPosition(latLng, address);
-//                        }
-//                    }
-//                });
-//            }
-//        }
-//        catch(IllegalStateException illegalStateException){
-//            Log.e("error catched", String.valueOf(illegalStateException));
-//        }
-//
     }
 }
