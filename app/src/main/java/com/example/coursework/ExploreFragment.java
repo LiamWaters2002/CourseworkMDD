@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,20 +57,47 @@ import java.util.List;
 
 public class ExploreFragment extends Fragment {
 
-    private EditText txtSearch;
+    private String placeType;
+    private TextView txtErrorMessage;
     private Marker markerSelected;
-    private Button btnSwitchView;
-    private RelativeLayout btnAdd;
+    private Button btnAddToDatabase;
+    private RelativeLayout btnSave;
+
+    //Place Type
     private LinearLayout btnAttractions;
     private LinearLayout btnRestaurants;
     private LinearLayout btnBars;
     private LinearLayout btnNightClubs;
+
+    //Place Type Signposts
     private ImageView btnAttractionsSignpost;
     private ImageView btnRestaurantsSignpost;
     private ImageView btnBarsSignpost;
     private ImageView btnNightClubsSignpost;
 
+    //Weather Type
+    private LinearLayout btnClear;
+    private LinearLayout btnCloud;
+    private LinearLayout btnRain;
+
+    //Weather Type Signposts
+    private ImageView btnClearSignpost;
+    private ImageView btnCloudSignpost;
+    private ImageView btnRainSignpost;
+
+    //Priority Rank
+    private LinearLayout btnLow;
+    private LinearLayout btnMedium;
+    private LinearLayout btnHigh;
+
+    //Priority Rank Signpost
+    private ImageView btnLowSignpost;
+    private ImageView btnMediumSignpost;
+    private ImageView btnHighSignpost;
+
     private boolean clickedViewCurrentLocation;//Use this for button click
+
+    private BottomSheetDialog bottomSheetDialog;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static final int APPROVED_REQUEST_CODE = 1000;
@@ -108,22 +136,62 @@ public class ExploreFragment extends Fragment {
 
         clickedViewCurrentLocation = true;
 
-        btnAdd = getView().findViewById(R.id.relative_layout_button_add);
+        //BottomSheetDialog
+        bottomSheetDialog = new BottomSheetDialog(getContext());
+        View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
+        bottomSheetDialog.setContentView(bottomSheetDialogView);
+        btnAddToDatabase = bottomSheetDialog.findViewById(R.id.btnAddToDatabase);
+        txtErrorMessage = bottomSheetDialog.findViewById(R.id.txtErrorMessage);
+
+        //Place Types
+        btnSave = getView().findViewById(R.id.relative_layout_button_add);
         btnAttractions = getView().findViewById(R.id.btnAttractions);
         btnRestaurants = getView().findViewById(R.id.btnRestaurants);
         btnBars = getView().findViewById(R.id.btnBars);
         btnNightClubs = getView().findViewById(R.id.btnNightClubs);
 
-
+        //Place Types Signposts
         btnAttractionsSignpost = getView().findViewById(R.id.btnAttractionsSignpost);
         btnRestaurantsSignpost = getView().findViewById(R.id.btnRestaurantsSignpost);
         btnBarsSignpost = getView().findViewById(R.id.btnBarsSignpost);
         btnNightClubsSignpost = getView().findViewById(R.id.btnNightClubsSignpost);
 
+        //Set Place Type Signposts invisible
         btnAttractionsSignpost.setVisibility(View.INVISIBLE);
         btnRestaurantsSignpost.setVisibility(View.INVISIBLE);
         btnBarsSignpost.setVisibility(View.INVISIBLE);
         btnNightClubsSignpost.setVisibility(View.INVISIBLE);
+
+        //Weather Types
+        btnClear = bottomSheetDialog.findViewById(R.id.btnClear);
+        btnCloud = bottomSheetDialog.findViewById(R.id.btnCloud);
+        btnRain = bottomSheetDialog.findViewById(R.id.btnRain);
+
+        //Weather Types Signpost
+        btnClearSignpost = bottomSheetDialog.findViewById(R.id.btnClearSignpost);
+        btnCloudSignpost = bottomSheetDialog.findViewById(R.id.btnCloudSignpost);
+        btnRainSignpost = bottomSheetDialog.findViewById(R.id.btnRainSignpost);
+
+        //Set Weather Type Signposts invisible
+        btnClearSignpost.setVisibility(View.INVISIBLE);
+        btnCloudSignpost.setVisibility(View.INVISIBLE);
+        btnRainSignpost.setVisibility(View.INVISIBLE);
+
+        //Priority Ranks
+        btnLow = bottomSheetDialog.findViewById(R.id.btnLow);
+        btnMedium = bottomSheetDialog.findViewById(R.id.btnMedium);
+        btnHigh = bottomSheetDialog.findViewById(R.id.btnHigh);
+
+        //Weather Types Signpost
+        btnLowSignpost = bottomSheetDialog.findViewById(R.id.btnLowSignpost);
+        btnMediumSignpost = bottomSheetDialog.findViewById(R.id.btnMediumSignpost);
+        btnHighSignpost = bottomSheetDialog.findViewById(R.id.btnHighSignpost);
+
+        //Set Weather Type Signposts invisible
+        btnLowSignpost.setVisibility(View.INVISIBLE);
+        btnMediumSignpost.setVisibility(View.INVISIBLE);
+        btnHighSignpost.setVisibility(View.INVISIBLE);
+
 
 //        btnRemove.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -132,18 +200,133 @@ public class ExploreFragment extends Fragment {
 //            }
 //        });
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        btnAddToDatabase.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
-                View bottomSheetDialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_dialog, null);
-                bottomSheetDialog.setContentView(bottomSheetDialogView);
-                bottomSheetDialog.show();
 
-                if(markerSelected != null){
-                    addToDatabase(markerSelected);
+                String errorMessage = "";
+                String weatherPreference = "";
+                int priority = 0;
+
+                if(btnLowSignpost.getVisibility() == View.VISIBLE){
+                    priority = 1;
+                }
+                else if(btnMediumSignpost.getVisibility() == View.VISIBLE){
+                    priority = 2;
+                }
+                else if(btnHighSignpost.getVisibility() == View.VISIBLE){
+                    priority = 3;
+                }
+                else{
+                    errorMessage = "Please select a priority level.";
                 }
 
+                if(btnClearSignpost.getVisibility() == View.VISIBLE){
+                    weatherPreference = "clear";
+                }
+                else if(btnCloudSignpost.getVisibility() == View.VISIBLE){
+                    weatherPreference = "cloud";
+                }
+                else if(btnRainSignpost.getVisibility() == View.VISIBLE){
+                    weatherPreference = "rain";
+                }
+                else{
+                    if(errorMessage.equals("")) {
+                        errorMessage = "Please select a weather preference.";
+                    }
+                    else{
+                        errorMessage = "Please select a priority level and a weather preference";
+                    }
+                }
+
+                if(errorMessage.equals("")){
+                    addToDatabase(markerSelected, priority, weatherPreference, placeType);
+                }
+                else{
+                    txtErrorMessage.setText(errorMessage);
+                }
+
+
+            }
+        });
+
+        btnHigh.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnHighSignpost.setVisibility(View.VISIBLE);
+                btnMediumSignpost.setVisibility(View.INVISIBLE);
+                btnLowSignpost.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btnMedium.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnHighSignpost.setVisibility(View.INVISIBLE);
+                btnMediumSignpost.setVisibility(View.VISIBLE);
+                btnLowSignpost.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btnLow.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnHighSignpost.setVisibility(View.INVISIBLE);
+                btnMediumSignpost.setVisibility(View.INVISIBLE);
+                btnLowSignpost.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnClear.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnClearSignpost.setVisibility(View.VISIBLE);
+                btnCloudSignpost.setVisibility(View.INVISIBLE);
+                btnRainSignpost.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btnCloud.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnClearSignpost.setVisibility(View.INVISIBLE);
+                btnCloudSignpost.setVisibility(View.VISIBLE);
+                btnRainSignpost.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        btnRain.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                btnClearSignpost.setVisibility(View.INVISIBLE);
+                btnCloudSignpost.setVisibility(View.INVISIBLE);
+                btnRainSignpost.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Reset selection
+                btnClearSignpost.setVisibility(View.INVISIBLE);
+                btnCloudSignpost.setVisibility(View.INVISIBLE);
+                btnRainSignpost.setVisibility(View.INVISIBLE);
+
+                btnHighSignpost.setVisibility(View.INVISIBLE);
+                btnMediumSignpost.setVisibility(View.INVISIBLE);
+                btnLowSignpost.setVisibility(View.INVISIBLE);
+                txtErrorMessage.setText("");
+
+
+                bottomSheetDialog.show();
             }
         });
 
@@ -201,7 +384,7 @@ public class ExploreFragment extends Fragment {
     }
 
 
-    private void addToDatabase(Marker markerSelected) {
+    private void addToDatabase(Marker markerSelected, int priority, String weatherPreference, String placeType) {
         LocationDatabase database = new LocationDatabase(getContext());
 
         LatLng position = markerSelected.getPosition();
@@ -209,9 +392,8 @@ public class ExploreFragment extends Fragment {
         String name = markerSelected.getTitle();
         double latitude = position.latitude;
         double longitude = position.longitude;
-        String weatherPreference = "Weather preference needs to be implemented";
-        int priority = 0;
-        database.addLocation(name, latitude, longitude, weatherPreference, priority);
+        database.addLocation(name, latitude, longitude, weatherPreference, priority, placeType);
+        Toast.makeText(getContext(),"added it to database", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -220,7 +402,7 @@ public class ExploreFragment extends Fragment {
     public void clickedRemove(){
         clickedViewCurrentLocation = true;
         googleMap.clear();
-        txtSearch.setText("");
+//        txtSearch.setText("");
         hideKeyboard();
 
         Toast.makeText(getContext(), Boolean.toString(clickedViewCurrentLocation), Toast.LENGTH_SHORT).show();
@@ -360,7 +542,7 @@ public class ExploreFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 100 && resultCode == RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
-            txtSearch.setText(place.getAddress());
+//            txtSearch.setText(place.getAddress());
             getLocationFromSearch();
             //.setText(String.format("Name" + place.getName()) // Gets name of place
             //.setText(String.valueOf(place.getLatLng()))  //Gets latlng
@@ -369,7 +551,8 @@ public class ExploreFragment extends Fragment {
 
 
     private void getLocationFromSearch() {
-        String searchInput = txtSearch.getText().toString();
+        String searchInput = ""; //temp
+//        String searchInput = txtSearch.getText().toString();
         Geocoder geocoder = new Geocoder(getContext());
         List<Address> addressList = new ArrayList<>();
         try {
@@ -441,15 +624,19 @@ public class ExploreFragment extends Fragment {
 
         if(type == "tourist_attraction"){
             btnAttractionsSignpost.setVisibility(View.VISIBLE);
+            placeType = type;
         }
         else if(type == "restaurant"){
             btnRestaurantsSignpost.setVisibility(View.VISIBLE);
+            placeType = type;
         }
         else if(type == "bar"){
             btnBarsSignpost.setVisibility(View.VISIBLE);
+            placeType = type;
         }
         else if(type == "night_club"){
             btnNightClubsSignpost.setVisibility(View.VISIBLE);
+            placeType = type;
         }
 
         Place.Type placeType;

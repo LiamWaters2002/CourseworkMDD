@@ -19,7 +19,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/btnSavedAttractions"
+                android:id="@+id/btnAttractions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -43,7 +43,7 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/btnSavedAttractionsSignpost"
+                    android:id="@+id/btnAttractionsSignpost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
@@ -53,7 +53,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnSavedRestaurants"
+                android:id="@+id/btnRestaurants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/searchRelativeLayout"
@@ -77,7 +77,7 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/btnSavedRestaurantsSignpost"
+                    android:id="@+id/btnRestaurantsSignpost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
@@ -87,7 +87,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnSavedBars"
+                android:id="@+id/btnBars"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/searchRelativeLayout"
@@ -111,7 +111,7 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/btnSavedBarsSignpost"
+                    android:id="@+id/btnBarsSignpost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"
@@ -121,7 +121,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/btnSavedNightClubs"
+                android:id="@+id/btnNightClubs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/searchRelativeLayout"
@@ -145,7 +145,7 @@
                     android:textSize="18sp" />
 
                 <ImageView
-                    android:id="@+id/btnSavedNightClubsSignpost"
+                    android:id="@+id/btnNightClubsSignpost"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="5dp"

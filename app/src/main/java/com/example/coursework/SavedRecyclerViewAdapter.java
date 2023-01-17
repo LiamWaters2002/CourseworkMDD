@@ -19,13 +19,13 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
 
     Context context;
     ArrayList<Integer> locationId, priority;
-    ArrayList<String>  locationName, weatherPreference;
+    ArrayList<String>  locationName, weatherPreference, placeType;
     ArrayList<Double> latitude, longitude;
     private CardViewClickListener cardViewClickListener;
 
 
     public SavedRecyclerViewAdapter(CardViewClickListener cardViewClickListener, Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
-                                    ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference){
+                                    ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType){
         this.cardViewClickListener = cardViewClickListener;
         this.context = context;
         this.locationId = locationId;
@@ -34,6 +34,7 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
         this.longitude = longitude;
         this.priority = priority;
         this.weatherPreference = weatherPreference;
+        this.placeType = placeType;
     }
 
     @NonNull

@@ -15,7 +15,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
     private String TABLE_NAME = "locations";
     private String COLUMN_ID = "id";
     private String COLUMN_NAME = "name";
-    private String COLUMN_TYPE = "name";
+    private String COLUMN_TYPE = "type";
     private String COLUMN_LATITUDE = "latitude";
     private String COLUMN_LONGITUDE = "Longitude";
     private String COLUMN_PRIORITY = "priority";
@@ -49,7 +49,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
         //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority){
+    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority, String placeType){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -58,6 +58,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LONGITUDE, longitude);
         contentValues.put(COLUMN_PRIORITY, priority);
         contentValues.put(COLUMN_WEATHER_PREFERENCE, weatherPreference);
+        contentValues.put(COLUMN_TYPE, placeType);
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
             Toast.makeText(context, "Fail adding to database", Toast.LENGTH_SHORT).show();

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.databinding.FragmentSavedBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SavedFragment extends Fragment {
 
@@ -23,15 +26,16 @@ public class SavedFragment extends Fragment {
     RecyclerView recyclerView;
     SavedRecyclerViewAdapter savedRecyclerViewAdapter;
 
-    LinearLayout btnSavedAttractions;
-    LinearLayout btnSavedRestaraunts;
-    LinearLayout btnSavedBars;
-    LinearLayout btnSavedNightClubs;
+    LinearLayout btnAttractions;
+    LinearLayout btnRestaraunts;
+    LinearLayout btnBars;
+    LinearLayout btnNightClubs;
 
     LocationDatabase locationDatabase;
 
     ArrayList<Integer> idList;
     ArrayList<String> locationNameList;
+    ArrayList<String> placeTypeList;
     ArrayList<Double> latitudeList;
     ArrayList<Double> longitudeList;
     ArrayList<Integer> priorityList;
@@ -48,25 +52,13 @@ public class SavedFragment extends Fragment {
 
         idList = new ArrayList<>();
         locationNameList = new ArrayList<>();
+        placeTypeList = new ArrayList<>();
         latitudeList = new ArrayList<>();
         longitudeList = new ArrayList<>();
         priorityList = new ArrayList<>();
         weatherPreferenceList = new ArrayList<>();
 
         recyclerView = binding.recyclerViewDisplay;
-
-//        btnSavedAttractions = getView().findViewById(R.id.btnSavedAttractions);
-//        btnSavedRestaraunts = getView().findViewById(R.id.btnSavedRestaurants);
-//        btnSavedBars = getView().findViewById(R.id.btnSavedBars);
-//        btnSavedNightClubs = getView().findViewById(R.id.btnSavedNightClubs);
-
-//        btnAttractions.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                filterType = 1; // Type 1
-//                updateRecyclerView();//3rd item in cgpte
-//            }
-//        });
 
         displayDatabase();
 
@@ -79,7 +71,7 @@ public class SavedFragment extends Fragment {
             }
         };
 
-        savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(cardViewClickListener, getContext(), idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList);
+        savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(cardViewClickListener, getContext(), idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
 
 
 
@@ -97,20 +89,40 @@ public class SavedFragment extends Fragment {
         binding = null;
     }
 
+    @Override
+    public void onViewCreated(View view,@Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        btnAttractions = getView().findViewById(R.id.btnAttractions);
+        btnRestaraunts = getView().findViewById(R.id.btnRestaurants);
+        btnBars = getView().findViewById(R.id.btnBars);
+        btnNightClubs = getView().findViewById(R.id.btnNightClubs);
+
+        btnAttractions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                List<CardView> filteredList = filterByType(savedRecyclerViewAdapter.getData(), type);
+//                savedRecyclerViewAdapter.setData(filteredList);
+                savedRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
     void displayDatabase(){
         Cursor cursor = locationDatabase.readDatabase();
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }
-        else{
-            while(cursor.moveToNext()){
+        while(cursor.moveToNext()){
+            if(true){//...........................................................................................................Filter here...
                 idList.add(Integer.parseInt(cursor.getString(0)));
                 locationNameList.add(cursor.getString(1));
-                latitudeList.add(Double.parseDouble(cursor.getString(2)));
-                longitudeList.add(Double.parseDouble(cursor.getString(3)));
-                priorityList.add(Integer.parseInt(cursor.getString(4)));
-                weatherPreferenceList.add(cursor.getString(5));
+                placeTypeList.add(cursor.getString(2));
+                latitudeList.add(Double.parseDouble(cursor.getString(3)));
+                longitudeList.add(Double.parseDouble(cursor.getString(4)));
+                priorityList.add(Integer.parseInt(cursor.getString(5)));
+                weatherPreferenceList.add(cursor.getString(6));
             }
+
         }
     }
 
