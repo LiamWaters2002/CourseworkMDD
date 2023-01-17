@@ -15,6 +15,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
     private String TABLE_NAME = "locations";
     private String COLUMN_ID = "id";
     private String COLUMN_NAME = "name";
+    private String COLUMN_TYPE = "name";
     private String COLUMN_LATITUDE = "latitude";
     private String COLUMN_LONGITUDE = "Longitude";
     private String COLUMN_PRIORITY = "priority";
@@ -34,6 +35,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
         String query = "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NAME + " TEXT, " +
+                COLUMN_TYPE + " TEXT, " +
                 COLUMN_LATITUDE + " REAL, " +
                 COLUMN_LONGITUDE + " REAL, " +
                 COLUMN_PRIORITY + " INTEGER, " +

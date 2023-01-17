@@ -48,12 +48,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ExploreFragment extends Fragment {
@@ -66,7 +64,10 @@ public class ExploreFragment extends Fragment {
     private LinearLayout btnRestaurants;
     private LinearLayout btnBars;
     private LinearLayout btnNightClubs;
-    private ImageView btnRemove;
+    private ImageView btnAttractionsSignpost;
+    private ImageView btnRestaurantsSignpost;
+    private ImageView btnBarsSignpost;
+    private ImageView btnNightClubsSignpost;
 
     private boolean clickedViewCurrentLocation;//Use this for button click
 
@@ -111,8 +112,18 @@ public class ExploreFragment extends Fragment {
         btnAttractions = getView().findViewById(R.id.btnAttractions);
         btnRestaurants = getView().findViewById(R.id.btnRestaurants);
         btnBars = getView().findViewById(R.id.btnBars);
-        btnNightClubs = getView().findViewById(R.id.btnNightClub);
-        btnRemove = getView().findViewById(R.id.ic_remove);
+        btnNightClubs = getView().findViewById(R.id.btnNightClubs);
+
+
+        btnAttractionsSignpost = getView().findViewById(R.id.btnAttractionsSignpost);
+        btnRestaurantsSignpost = getView().findViewById(R.id.btnRestaurantsSignpost);
+        btnBarsSignpost = getView().findViewById(R.id.btnBarsSignpost);
+        btnNightClubsSignpost = getView().findViewById(R.id.btnNightClubsSignpost);
+
+        btnAttractionsSignpost.setVisibility(View.INVISIBLE);
+        btnRestaurantsSignpost.setVisibility(View.INVISIBLE);
+        btnBarsSignpost.setVisibility(View.INVISIBLE);
+        btnNightClubsSignpost.setVisibility(View.INVISIBLE);
 
 //        btnRemove.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -311,6 +322,13 @@ public class ExploreFragment extends Fragment {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                             if(clickedViewCurrentLocation){
                                 setCameraPosition(latLng, null);
+                                //Default place type display
+                                if(btnAttractionsSignpost.getVisibility() == View.INVISIBLE &&
+                                        btnRestaurantsSignpost.getVisibility() == View.INVISIBLE &&
+                                        btnBarsSignpost.getVisibility() == View.INVISIBLE &&
+                                        btnNightClubsSignpost.getVisibility() == View.INVISIBLE){
+                                    clickedPlaceType("tourist_attraction");
+                                }
                             }
                         }
                         else{
@@ -374,6 +392,7 @@ public class ExploreFragment extends Fragment {
     public void setCameraPosition(LatLng latLng, Address address){
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16.0f);//zoom in to that distance
         googleMap.moveCamera(cameraUpdate);
+        googleMap.animateCamera(cameraUpdate);
         if(address != null){
             googleMap.clear();
             hideKeyboard();
@@ -414,6 +433,24 @@ public class ExploreFragment extends Fragment {
     @SuppressLint("MissingPermission")
     private void clickedPlaceType(String type) {
         googleMap.clear();
+
+        btnAttractionsSignpost.setVisibility(View.INVISIBLE);
+        btnRestaurantsSignpost.setVisibility(View.INVISIBLE);
+        btnBarsSignpost.setVisibility(View.INVISIBLE);
+        btnNightClubsSignpost.setVisibility(View.INVISIBLE);
+
+        if(type == "tourist_attraction"){
+            btnAttractionsSignpost.setVisibility(View.VISIBLE);
+        }
+        else if(type == "restaurant"){
+            btnRestaurantsSignpost.setVisibility(View.VISIBLE);
+        }
+        else if(type == "bar"){
+            btnBarsSignpost.setVisibility(View.VISIBLE);
+        }
+        else if(type == "night_club"){
+            btnNightClubsSignpost.setVisibility(View.VISIBLE);
+        }
 
         Place.Type placeType;
 

@@ -4,9 +4,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Array;
@@ -15,16 +18,21 @@ import java.util.ArrayList;
 public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecyclerViewAdapter.CustomViewHolder> {
 
     Context context;
-    ArrayList locationId, locationName, latitude, longitude, timePreference, weatherPreference;
+    ArrayList<Integer> locationId, priority;
+    ArrayList<String>  locationName, weatherPreference;
+    ArrayList<Double> latitude, longitude;
+    private CardViewClickListener cardViewClickListener;
 
-    public SavedRecyclerViewAdapter(Context context, ArrayList locationId, ArrayList locationName, ArrayList latitude,
-                                    ArrayList longitude, ArrayList timePreference, ArrayList weatherPreference){
+
+    public SavedRecyclerViewAdapter(CardViewClickListener cardViewClickListener, Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
+                                    ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference){
+        this.cardViewClickListener = cardViewClickListener;
         this.context = context;
         this.locationId = locationId;
         this.locationName = locationName;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.timePreference = timePreference;
+        this.priority = priority;
         this.weatherPreference = weatherPreference;
     }
 
@@ -33,7 +41,7 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.recycler_view_row, parent, false);
-        return new CustomViewHolder(view);
+        return new CustomViewHolder(view, context);
     }
 
     @Override
@@ -41,11 +49,22 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
         holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
         holder.txtLocationAddress.setText("Test");
+
+        holder.itemView.setOnClickListener(view -> {
+
+            cardViewClickListener.onItemClick(locationId.get(position));
+
+                });
     }
 
     @Override
     public int getItemCount() {
         return locationId.size();
+    }
+
+    public interface CardViewClickListener{
+        void onItemClick(Object id);
+
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -54,12 +73,14 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
         TextView txtLocationName;
         TextView txtLocationAddress;
 
-        public CustomViewHolder(@NonNull View itemView) {
+        public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocationName);
             txtLocationAddress = itemView.findViewById(R.id.txtAddress);
         }
     }
+
+
 
 }

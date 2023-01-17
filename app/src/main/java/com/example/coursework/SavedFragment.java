@@ -5,11 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,13 +23,18 @@ public class SavedFragment extends Fragment {
     RecyclerView recyclerView;
     SavedRecyclerViewAdapter savedRecyclerViewAdapter;
 
+    LinearLayout btnSavedAttractions;
+    LinearLayout btnSavedRestaraunts;
+    LinearLayout btnSavedBars;
+    LinearLayout btnSavedNightClubs;
+
     LocationDatabase locationDatabase;
 
-    ArrayList<String> idList;
+    ArrayList<Integer> idList;
     ArrayList<String> locationNameList;
-    ArrayList<String> latitudeList;
-    ArrayList<String> longitudeList;
-    ArrayList<String> timePreferenceList;
+    ArrayList<Double> latitudeList;
+    ArrayList<Double> longitudeList;
+    ArrayList<Integer> priorityList;
     ArrayList<String> weatherPreferenceList;
 
     @Override
@@ -46,14 +50,39 @@ public class SavedFragment extends Fragment {
         locationNameList = new ArrayList<>();
         latitudeList = new ArrayList<>();
         longitudeList = new ArrayList<>();
-        timePreferenceList = new ArrayList<>();
+        priorityList = new ArrayList<>();
         weatherPreferenceList = new ArrayList<>();
 
         recyclerView = binding.recyclerViewDisplay;
 
+//        btnSavedAttractions = getView().findViewById(R.id.btnSavedAttractions);
+//        btnSavedRestaraunts = getView().findViewById(R.id.btnSavedRestaurants);
+//        btnSavedBars = getView().findViewById(R.id.btnSavedBars);
+//        btnSavedNightClubs = getView().findViewById(R.id.btnSavedNightClubs);
+
+//        btnAttractions.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                filterType = 1; // Type 1
+//                updateRecyclerView();//3rd item in cgpte
+//            }
+//        });
+
         displayDatabase();
 
-        savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(getContext(), idList, locationNameList, latitudeList, longitudeList, timePreferenceList, weatherPreferenceList);
+        SavedRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SavedRecyclerViewAdapter.CardViewClickListener() {
+            @Override
+            public void onItemClick(Object id) {
+                Fragment fragment = new InformationFragment();
+                MainActivity activity = (MainActivity) getActivity();
+                activity.switchFragment(fragment, Integer.parseInt(id.toString()));
+            }
+        };
+
+        savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(cardViewClickListener, getContext(), idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList);
+
+
+
         recyclerView.setAdapter(savedRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -75,16 +104,13 @@ public class SavedFragment extends Fragment {
         }
         else{
             while(cursor.moveToNext()){
-                idList.add(cursor.getString(0));
+                idList.add(Integer.parseInt(cursor.getString(0)));
                 locationNameList.add(cursor.getString(1));
-                latitudeList.add(cursor.getString(2));
-                longitudeList.add(cursor.getString(3));
-                timePreferenceList.add(cursor.getString(4));
+                latitudeList.add(Double.parseDouble(cursor.getString(2)));
+                longitudeList.add(Double.parseDouble(cursor.getString(3)));
+                priorityList.add(Integer.parseInt(cursor.getString(4)));
                 weatherPreferenceList.add(cursor.getString(5));
-
             }
-
-
         }
     }
 
