@@ -1,4 +1,4 @@
-package com.example.coursework;
+package com.example.coursework.unused;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.app.Activity.RESULT_OK;

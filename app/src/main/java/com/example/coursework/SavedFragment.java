@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,29 +16,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.coursework.databinding.FragmentSavedBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SavedFragment extends Fragment {
 
     private FragmentSavedBinding binding;
 
-    RecyclerView recyclerView;
-    SavedRecyclerViewAdapter savedRecyclerViewAdapter;
+    private RecyclerView recyclerView;
+    private SavedRecyclerViewAdapter savedRecyclerViewAdapter;
 
-    LinearLayout btnAttractions;
-    LinearLayout btnRestaraunts;
-    LinearLayout btnBars;
-    LinearLayout btnNightClubs;
+    //Place Type
+    private LinearLayout btnAttractions;
+    private LinearLayout btnRestaurants;
+    private LinearLayout btnBars;
+    private LinearLayout btnNightClubs;
 
-    LocationDatabase locationDatabase;
+    private LocationDatabase locationDatabase;
 
-    ArrayList<Integer> idList;
-    ArrayList<String> locationNameList;
-    ArrayList<String> placeTypeList;
-    ArrayList<Double> latitudeList;
-    ArrayList<Double> longitudeList;
-    ArrayList<Integer> priorityList;
-    ArrayList<String> weatherPreferenceList;
+    private ArrayList<Integer> idList;
+    private ArrayList<String> locationNameList;
+    private ArrayList<String> placeTypeList;
+    private ArrayList<Double> latitudeList;
+    private ArrayList<Double> longitudeList;
+    private ArrayList<Integer> priorityList;
+    private ArrayList<String> weatherPreferenceList;
 
     @Override
     public View onCreateView(
@@ -60,7 +59,6 @@ public class SavedFragment extends Fragment {
 
         recyclerView = binding.recyclerViewDisplay;
 
-        displayDatabase();
 
         SavedRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SavedRecyclerViewAdapter.CardViewClickListener() {
             @Override
@@ -93,27 +91,47 @@ public class SavedFragment extends Fragment {
     public void onViewCreated(View view,@Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         btnAttractions = getView().findViewById(R.id.btnAttractions);
-        btnRestaraunts = getView().findViewById(R.id.btnRestaurants);
+        btnRestaurants = getView().findViewById(R.id.btnRestaurants);
         btnBars = getView().findViewById(R.id.btnBars);
         btnNightClubs = getView().findViewById(R.id.btnNightClubs);
 
         btnAttractions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                List<CardView> filteredList = filterByType(savedRecyclerViewAdapter.getData(), type);
-//                savedRecyclerViewAdapter.setData(filteredList);
-                savedRecyclerViewAdapter.notifyDataSetChanged();
+                displayDatabase("tourist_attraction");
+            }
+        });
+
+        btnRestaurants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayDatabase("restauraunt");
+            }
+        });
+
+        btnBars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayDatabase("bar");
+            }
+        });
+
+        btnNightClubs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                displayDatabase("night_club");
             }
         });
     }
 
-    void displayDatabase(){
-        Cursor cursor = locationDatabase.readDatabase();
+    void displayDatabase(String placeType){
+        savedRecyclerViewAdapter.clearAll();
+        Cursor cursor = locationDatabase.readDatabase(placeType);
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }
         while(cursor.moveToNext()){
-            if(true){//...........................................................................................................Filter here...
+            if(cursor.getString(2).equals(placeType)){//...........................................................................................................Filter here...
                 idList.add(Integer.parseInt(cursor.getString(0)));
                 locationNameList.add(cursor.getString(1));
                 placeTypeList.add(cursor.getString(2));
@@ -122,8 +140,8 @@ public class SavedFragment extends Fragment {
                 priorityList.add(Integer.parseInt(cursor.getString(5)));
                 weatherPreferenceList.add(cursor.getString(6));
             }
-
         }
+        savedRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 }

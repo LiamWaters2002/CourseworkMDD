@@ -68,8 +68,8 @@ public class LocationDatabase extends SQLiteOpenHelper {
         }
     }
 
-    Cursor readDatabase(){
-        String query = "SELECT * FROM " + TABLE_NAME;
+    protected Cursor readDatabase(String placeType){
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TYPE + " = '" + placeType + "'";
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         Cursor cursor = null;

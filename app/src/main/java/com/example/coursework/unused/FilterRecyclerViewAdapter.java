@@ -1,4 +1,4 @@
-package com.example.coursework;
+package com.example.coursework.unused;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.coursework.R;
 
 import java.util.ArrayList;
 

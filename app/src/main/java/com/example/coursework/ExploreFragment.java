@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -142,9 +141,9 @@ public class ExploreFragment extends Fragment {
         bottomSheetDialog.setContentView(bottomSheetDialogView);
         btnAddToDatabase = bottomSheetDialog.findViewById(R.id.btnAddToDatabase);
         txtErrorMessage = bottomSheetDialog.findViewById(R.id.txtErrorMessage);
+        btnSave = getView().findViewById(R.id.relative_layout_button_add);
 
         //Place Types
-        btnSave = getView().findViewById(R.id.relative_layout_button_add);
         btnAttractions = getView().findViewById(R.id.btnAttractions);
         btnRestaurants = getView().findViewById(R.id.btnRestaurants);
         btnBars = getView().findViewById(R.id.btnBars);

@@ -37,6 +37,16 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
         this.placeType = placeType;
     }
 
+    public void clearAll(){
+        locationId.clear();
+        locationName.clear();
+        latitude.clear();
+        longitude.clear();
+        priority.clear();
+        weatherPreference.clear();
+        placeType.clear();
+    }
+
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
