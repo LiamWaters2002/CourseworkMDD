@@ -78,4 +78,26 @@ public class LocationDatabase extends SQLiteOpenHelper {
         }
         return cursor;
     }
+
+    protected void deleteRow(int id){
+        String query = "DELETE FROM" +  TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL(query);
+    }
+
+    protected void editRow(int id, int priority, String weatherPreference){
+        String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_PRIORITY + " = '"+ priority +"', " + COLUMN_WEATHER_PREFERENCE + " = '" + weatherPreference + "' WHERE COLUMN_ID = " + id;
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL(query);
+    }
+
+    protected Cursor fetchRow(int id){
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+        Cursor cursor = null;
+        if(sqLiteDatabase != null){
+            cursor = sqLiteDatabase.rawQuery(query, null);
+        }
+        return cursor;
+    }
 }

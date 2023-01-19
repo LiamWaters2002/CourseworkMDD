@@ -131,7 +131,7 @@ public class SavedFragment extends Fragment {
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }
         while(cursor.moveToNext()){
-            if(cursor.getString(2).equals(placeType)){//...........................................................................................................Filter here...
+            if(cursor.getString(2).equals(placeType)){
                 idList.add(Integer.parseInt(cursor.getString(0)));
                 locationNameList.add(cursor.getString(1));
                 placeTypeList.add(cursor.getString(2));
