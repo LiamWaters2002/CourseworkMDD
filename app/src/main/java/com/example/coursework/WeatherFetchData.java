@@ -2,30 +2,20 @@ package com.example.coursework;
 
 import android.os.AsyncTask;
 
-import com.android.volley.toolbox.HttpResponse;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
-public class WeatherAdapter extends AsyncTask<String, Void, String> {
+public class WeatherFetchData extends AsyncTask<String, Void, String> {
 
     @Override
     protected String doInBackground(String... params) {
         String location = params[0];
         String apiKey = params[1];
         try {
-            URL url = new URL("https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=24&location="+location+"&contentType=json&unitGroup=us&shortColumnNames=0");
+
+            URL url = new URL("https://visual-crossing-weather.p.rapidapi.com/forecast?aggregateHours=1&location="+location+"&contentType=json&unitGroup=us&shortColumnNames=0");
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-RapidAPI-Key", "feb7abc8a7msh50b4159db41f088p16428bjsn5ad7bf336048");

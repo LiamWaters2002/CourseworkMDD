@@ -4,15 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecyclerViewAdapter.CustomViewHolder> {
@@ -22,7 +18,6 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
     ArrayList<String>  locationName, weatherPreference, placeType;
     ArrayList<Double> latitude, longitude;
     private CardViewClickListener cardViewClickListener;
-
 
     public SavedRecyclerViewAdapter(CardViewClickListener cardViewClickListener, Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
                                     ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType){
@@ -87,7 +82,7 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
         public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
-            txtLocationName = itemView.findViewById(R.id.txtLocationName);
+            txtLocationName = itemView.findViewById(R.id.txtLocation);
             txtLocationAddress = itemView.findViewById(R.id.txtAddress);
         }
     }

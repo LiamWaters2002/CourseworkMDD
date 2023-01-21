@@ -65,7 +65,7 @@ public class FilterRecyclerViewAdapter extends RecyclerView.Adapter<FilterRecycl
         public FilterViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
-            txtLocationType = itemView.findViewById(R.id.txtLocationName);
+            txtLocationType = itemView.findViewById(R.id.txtLocation);
             txtLocationAddress = itemView.findViewById(R.id.txtAddress);
         }
     }

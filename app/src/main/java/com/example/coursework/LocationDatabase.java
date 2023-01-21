@@ -80,7 +80,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
     }
 
     protected void deleteRow(int id){
-        String query = "DELETE FROM" +  TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
+        String query = "DELETE FROM " +  TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.execSQL(query);
     }

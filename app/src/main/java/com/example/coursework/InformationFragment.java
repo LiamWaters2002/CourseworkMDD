@@ -1,6 +1,8 @@
 package com.example.coursework;
 
+import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,10 +70,23 @@ public class InformationFragment extends Fragment {
         txtPriority  = getView().findViewById(R.id.priority);
         txtWeatherPreference  = getView().findViewById(R.id.weatherPreference);
 
-
         txtLocationId.setText(Integer.toString(id));
         txtLocationName.setText(locationName);
+
+        if(txtLocationName.equals("tourist_attraction")){
+            txtPlaceType.setText("Tourist Attraction");
+        }
+        else if(txtLocationName.equals("bar")){
+            txtPlaceType.setText("Bar");
+        }
+        else if(txtLocationName.equals("night_club")){
+            txtPlaceType.setText("Night Club");
+        }
+        else if(txtLocationName.equals("restaurant")){
+            txtPlaceType.setText("Restaurant");
+        }
         txtPlaceType.setText(placeType);
+
         txtWeatherPreference.setText(weatherPreference);
         txtPriority.setText(Integer.toString(priority));
 
@@ -91,6 +106,8 @@ public class InformationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 locationDatabase.deleteRow(id);
+                MainActivity activity = (MainActivity) getActivity();
+                activity.switchFragment(new SavedFragment(), 0);
             }
         });
 
@@ -100,6 +117,8 @@ public class InformationFragment extends Fragment {
 
 
         toolbar = getView().findViewById(R.id.toolbar);
+        toolbar.setTitle("Saved > " + locationName);
+        toolbar.setTitleTextColor(Color.WHITE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

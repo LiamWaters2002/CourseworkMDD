@@ -4,7 +4,7 @@
     <item name="host_navigation_fragment" type="id" />
     <item name="FragmentContainerView" type="id" />
     <item name="navigationHostFragment" type="id" />
-    <item name="txtLocationName" type="id" />
+    <item name="txtLocation" type="id" />
     <item name="txtLocationId" type="id" />
     <item name="cardView" type="id" />
 </resources>

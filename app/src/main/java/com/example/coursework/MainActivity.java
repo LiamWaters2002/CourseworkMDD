@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchFragment(Fragment fragment, int id) {
 //        Fragment previousFragment = getSupportFragmentManager().findFragmentById(R.id.savedFragment);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("id", id); //Store object id into bundle.
