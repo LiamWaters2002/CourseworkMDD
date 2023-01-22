@@ -1,6 +1,8 @@
 package com.example.coursework;
 
+import android.database.Cursor;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,12 +11,30 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 
 public class SuggestFragment extends Fragment {
 
     private Toolbar toolbar;
+    private SuggestRecyclerViewAdapter suggestRecyclerViewAdapter;
+    private LocationDatabase locationDatabase;
+    private RecyclerView recyclerView;
+
+    private ArrayList<Integer> idList;
+    private ArrayList<String> locationNameList;
+    private ArrayList<String> placeTypeList;
+    private ArrayList<Double> latitudeList;
+    private ArrayList<Double> longitudeList;
+    private ArrayList<Integer> priorityList;
+    private ArrayList<String> weatherPreferenceList;
+
 
     public SuggestFragment() {
         // Required empty public constructor
@@ -26,6 +46,14 @@ public class SuggestFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        idList = new ArrayList<>();
+        locationNameList = new ArrayList<>();
+        placeTypeList = new ArrayList<>();
+        latitudeList = new ArrayList<>();
+        longitudeList = new ArrayList<>();
+        priorityList = new ArrayList<>();
+        weatherPreferenceList = new ArrayList<>();
+        recyclerView = new RecyclerView(getContext());
         super.onCreate(savedInstanceState);
 
     }
@@ -41,8 +69,14 @@ public class SuggestFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState){
+
+        locationDatabase = new LocationDatabase(getContext());
+        recyclerView = getView().findViewById(R.id.suggestRecyclerView);
+
         toolbar = getView().findViewById(R.id.suggestToolbar);
-        toolbar.setTitle("Saved > " + "aaaaaaaaaaaaa");
+        Bundle bundle = this.getArguments();
+        String time = bundle.get("time").toString();
+        toolbar.setTitle("Scheduler > " + time);
         toolbar.setTitleTextColor(Color.WHITE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,5 +88,46 @@ public class SuggestFragment extends Fragment {
 
             }
         });
+
+        SuggestRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SuggestRecyclerViewAdapter.CardViewClickListener() {
+            @Override
+            public void onItemClick(int id) {
+
+            }
+        };
+
+        suggestRecyclerViewAdapter = new SuggestRecyclerViewAdapter(cardViewClickListener, getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
+
+        recyclerView.setAdapter(suggestRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        displayDatabase("all");
+
+    }
+
+    void displayDatabase(String placeType){
+        suggestRecyclerViewAdapter.clearAll();
+        Cursor cursor;
+        if(placeType.equals("all")){
+            cursor = locationDatabase.readDatabase();
+        }else{
+            cursor = locationDatabase.readDatabase(placeType);
+        }
+
+        if(cursor.getCount() == 0){
+            Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
+        }
+        while(cursor.moveToNext()){
+            if(placeType.equals("all") || cursor.getString(2).equals(placeType)){
+                idList.add(Integer.parseInt(cursor.getString(0)));
+                locationNameList.add(cursor.getString(1));
+                placeTypeList.add(cursor.getString(2));
+                latitudeList.add(Double.parseDouble(cursor.getString(3)));
+                longitudeList.add(Double.parseDouble(cursor.getString(4)));
+                priorityList.add(Integer.parseInt(cursor.getString(5)));
+                weatherPreferenceList.add(cursor.getString(6));
+            }
+        }
+        suggestRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

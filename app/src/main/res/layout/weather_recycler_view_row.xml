@@ -30,13 +30,13 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgMarkerType"
+                app:layout_constraintStart_toEndOf="@+id/imgWeatherType"
                 app:layout_constraintTop_toTopOf="parent">
 
             </TextView>
 
             <ImageView
-                android:id="@+id/imgMarkerType"
+                android:id="@+id/imgWeatherType"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"

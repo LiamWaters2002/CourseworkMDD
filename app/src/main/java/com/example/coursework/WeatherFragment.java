@@ -1,5 +1,11 @@
 package com.example.coursework;
 
+import android.content.Context;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -26,6 +33,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
@@ -48,8 +57,35 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         weatherConditionsList = new ArrayList<>();
         dateList = new ArrayList<>();
-
         super.onViewCreated(view, savedInstanceState);
+
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                // Make use of the location object sent in the onLocationChanged(Location) callback.
+                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+                List<Address> addresses;
+                try {
+                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                    if (addresses.size() > 0) {
+                        String cityName = addresses.get(0).getLocality();
+                        //Do what you want with cityName
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+// Register the listener with the Location Manager to receive location updates
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+
+
+
+
 
         WeatherFetchData weatherFetchData = new WeatherFetchData();
 
@@ -72,7 +108,7 @@ public class WeatherFragment extends Fragment {
 
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            LocalDate today = LocalDate.now().plusDays(1);
+            LocalDate today = LocalDate.now();
 
 
             for (int i = 0; i < values.length(); i++) {
@@ -99,11 +135,11 @@ public class WeatherFragment extends Fragment {
 
         WeatherRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new WeatherRecyclerViewAdapter.CardViewClickListener() {
             @Override
-            public void onItemClick(Object id) {
+            public void onItemClick(String dateTime) {
                 Fragment fragment = new SuggestFragment();
                 MainActivity activity = (MainActivity) getActivity();
                 Bundle bundle = new Bundle();
-                bundle.putInt("id", 0);
+                bundle.putString("time", dateTime);
                 activity.switchFragment(fragment, bundle);
             }
         };

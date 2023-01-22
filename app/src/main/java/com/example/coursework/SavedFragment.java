@@ -69,8 +69,6 @@ public class SavedFragment extends Fragment {
                 bundle.putInt("id", id); //Store object id into bundle.
                 activity.switchFragment(fragment, bundle);
             }
-
-
         };
 
         savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(cardViewClickListener, getContext(), idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
@@ -80,7 +78,6 @@ public class SavedFragment extends Fragment {
         recyclerView.setAdapter(savedRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
 
         return binding.getRoot();
     }
@@ -126,16 +123,24 @@ public class SavedFragment extends Fragment {
                 displayDatabase("night_club");
             }
         });
+
+        displayDatabase("all");
     }
 
     void displayDatabase(String placeType){
         savedRecyclerViewAdapter.clearAll();
-        Cursor cursor = locationDatabase.readDatabase(placeType);
+        Cursor cursor;
+        if(placeType.equals("all")){
+            cursor = locationDatabase.readDatabase();
+        }else{
+            cursor = locationDatabase.readDatabase(placeType);
+        }
+
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }
         while(cursor.moveToNext()){
-            if(cursor.getString(2).equals(placeType)){
+            if(placeType.equals("all") || cursor.getString(2).equals(placeType)){
                 idList.add(Integer.parseInt(cursor.getString(0)));
                 locationNameList.add(cursor.getString(1));
                 placeTypeList.add(cursor.getString(2));

@@ -7,10 +7,7 @@
     <item android:title="Nearby"
         android:icon="@drawable/ic_baseline_map_24"
         android:id="@+id/exploreFragment"/>
-    <item android:title="Travel"
-        android:icon="@drawable/ic_baseline_location_on_24"
-        android:id="@+id/travelFragment"/>
-    <item android:title="Suggest"
+    <item android:title="Scheduler"
     android:icon="@drawable/ic_baseline_wb_sunny_24"
         android:id="@+id/weatherFragment"/>
 

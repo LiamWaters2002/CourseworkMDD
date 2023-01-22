@@ -1,9 +1,11 @@
 package com.example.coursework;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,8 +38,27 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
     @Override
     public void onBindViewHolder(WeatherRecyclerViewHolder holder, int position) {
+
+        if(date == null){
+            Log.e("error", "date is null");
+        }
+
         holder.dateTextView.setText(date.get(position));
+        String strWeatherCondition = weatherCondition.get(position);
         holder.conditionsTextView.setText(weatherCondition.get(position));
+
+        WeatherTypes weatherTypes = new WeatherTypes();
+
+        if(weatherTypes.isItClearWeatherType(strWeatherCondition)){
+            holder.imgWeather.setImageResource(R.drawable.clear);
+        }
+        else if(weatherTypes.isItCloudWeatherType(strWeatherCondition)){
+            holder.imgWeather.setImageResource(R.drawable.cloud);
+        }
+        else{
+            //There are 43 weather types, 35 of them being different rain types :p
+            holder.imgWeather.setImageResource(R.drawable.rain);
+        }
 
         holder.itemView.setOnClickListener(view -> {
 
@@ -52,17 +73,19 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         }
 
     public interface CardViewClickListener{
-        void onItemClick(Object id);
+        void onItemClick(String id);
     }
 
     public class WeatherRecyclerViewHolder extends RecyclerView.ViewHolder {
         public TextView dateTextView;
         public TextView conditionsTextView;
+        public ImageView imgWeather;
 
         public WeatherRecyclerViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             dateTextView = (TextView) itemView.findViewById(R.id.txtTime);
             conditionsTextView = (TextView) itemView.findViewById(R.id.txtWeather);
+            imgWeather = itemView.findViewById(R.id.imgWeatherType);
         }
     }
 }

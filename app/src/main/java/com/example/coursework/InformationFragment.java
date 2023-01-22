@@ -124,8 +124,8 @@ public class InformationFragment extends Fragment {
         // Download the image from the URL
         try {
             URL url = new URL(streetViewUrl);
-            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            imageView.setImageBitmap(image);
+//            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//            imageView.setImageBitmap(image);
         } catch (IOException e) {
             e.printStackTrace();
         }

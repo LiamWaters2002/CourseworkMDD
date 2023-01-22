@@ -19,7 +19,6 @@ public class WeatherFetchData extends AsyncTask<String, Void, String> {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("X-RapidAPI-Key", "feb7abc8a7msh50b4159db41f088p16428bjsn5ad7bf336048");
-            connection.setRequestProperty("X-RapidAPI-Host", "visual-crossing-weather.p.rapidapi.com");
             connection.connect();
             int responseCode = connection.getResponseCode();
             if (responseCode != 200) {
