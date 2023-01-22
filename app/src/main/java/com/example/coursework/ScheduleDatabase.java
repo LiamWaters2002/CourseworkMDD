@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-public class LocationDatabase extends SQLiteOpenHelper {
+public class ScheduleDatabase extends SQLiteOpenHelper {
 
     private Context context;
     private String TABLE_NAME = "locations";
@@ -17,14 +17,13 @@ public class LocationDatabase extends SQLiteOpenHelper {
     private String COLUMN_NAME = "name";
     private String COLUMN_TYPE = "type";
     private String COLUMN_LATITUDE = "latitude";
-    private String COLUMN_LONGITUDE = "Longitude";
-    private String COLUMN_PRIORITY = "priority";
-    private String COLUMN_WEATHER_PREFERENCE = "weather_preference";
+    private String COLUMN_LONGITUDE = "longitude";
+    private String COLUMN_TIME = "time";
 
 
 
-    public LocationDatabase(@Nullable Context context){
-        super(context, "Locations.db", null, 1);
+    public ScheduleDatabase(@Nullable Context context){
+        super(context, "Schedule.db", null, 1);
         this.context = context;
 
     }
@@ -38,26 +37,24 @@ public class LocationDatabase extends SQLiteOpenHelper {
                 COLUMN_TYPE + " TEXT, " +
                 COLUMN_LATITUDE + " REAL, " +
                 COLUMN_LONGITUDE + " REAL, " +
-                COLUMN_PRIORITY + " INTEGER, " +
-                COLUMN_WEATHER_PREFERENCE + " TEXT);";
+                COLUMN_TIME + " STRING);";
 
         sqLiteDatabase.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority, String placeType){
+    void addLocation(String locationName, double latitude, double longitude, String time, String placeType){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(COLUMN_NAME, locationName);
         contentValues.put(COLUMN_LATITUDE, latitude);
         contentValues.put(COLUMN_LONGITUDE, longitude);
-        contentValues.put(COLUMN_PRIORITY, priority);
-        contentValues.put(COLUMN_WEATHER_PREFERENCE, weatherPreference);
+        contentValues.put(COLUMN_TIME, time);
         contentValues.put(COLUMN_TYPE, placeType);
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
@@ -85,14 +82,15 @@ public class LocationDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(query);
     }
 
-    protected void editRow(int id, int priority, String weatherPreference){
-        String query = "UPDATE " + TABLE_NAME + " SET " + COLUMN_PRIORITY + " = '"+ priority +"', " + COLUMN_WEATHER_PREFERENCE + " = '" + weatherPreference + "' WHERE " + COLUMN_ID + " = " + id;
+    protected void deleteRow(String time){
+        String query = "DELETE FROM " +  TABLE_NAME + " WHERE " + COLUMN_TIME + " = " + time;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.execSQL(query);
     }
 
-    protected Cursor fetchRow(int id){
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
+
+    protected Cursor fetchRow(String time){
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TIME + " = " + time;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = null;
         if(sqLiteDatabase != null){

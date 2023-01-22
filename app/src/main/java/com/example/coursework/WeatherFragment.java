@@ -1,10 +1,10 @@
 package com.example.coursework;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +18,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 public class WeatherFragment extends Fragment {
@@ -62,15 +70,23 @@ public class WeatherFragment extends Fragment {
 
             JSONArray values = london.getJSONArray("values");
 
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            LocalDate today = LocalDate.now().plusDays(1);
+
+
             for (int i = 0; i < values.length(); i++) {
                 JSONObject day = values.getJSONObject(i);
                 String dateTime = day.getString("datetimeStr");
                 String conditions = day.getString("conditions");
-//                if(){
-//
-//                }
-                dateList.add(dateTime.toString());
-                weatherConditionsList.add(conditions.toString());
+
+                LocalDate localDateTime = LocalDate.parse(dateTime, formatter);
+
+                if(localDateTime.isEqual(today)){
+                    dateList.add(dateTime.toString());
+                    weatherConditionsList.add(conditions.toString());
+                }
+
             }
 
         } catch (JSONException e) {
@@ -84,15 +100,17 @@ public class WeatherFragment extends Fragment {
         WeatherRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new WeatherRecyclerViewAdapter.CardViewClickListener() {
             @Override
             public void onItemClick(Object id) {
-                Fragment fragment = new InformationFragment();
+                Fragment fragment = new SuggestFragment();
                 MainActivity activity = (MainActivity) getActivity();
-                activity.switchFragment(fragment, Integer.parseInt(id.toString()));
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", 0);
+                activity.switchFragment(fragment, bundle);
             }
         };
 
         WeatherRecyclerViewAdapter weatherRecyclerViewAdapter = new WeatherRecyclerViewAdapter(cardViewClickListener, getContext(), weatherConditionsList, dateList);
 
-        RecyclerView weatherRecyclerView = getView().findViewById(R.id.weatherRecyclerView);
+        RecyclerView weatherRecyclerView = getView().findViewById(R.id.recyclerView);
         weatherRecyclerView.setAdapter(weatherRecyclerViewAdapter);
         weatherRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

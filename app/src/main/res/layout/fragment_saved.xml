@@ -157,7 +157,7 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewDisplay"
+        android:id="@+id/recyclerView"
         android:layout_below="@+id/relativeLayoutFilter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

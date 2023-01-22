@@ -57,16 +57,20 @@ public class SavedFragment extends Fragment {
         priorityList = new ArrayList<>();
         weatherPreferenceList = new ArrayList<>();
 
-        recyclerView = binding.recyclerViewDisplay;
+        recyclerView = binding.recyclerView;
 
 
         SavedRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SavedRecyclerViewAdapter.CardViewClickListener() {
             @Override
-            public void onItemClick(Object id) {
+            public void onItemClick(int id) {
                 Fragment fragment = new InformationFragment();
                 MainActivity activity = (MainActivity) getActivity();
-                activity.switchFragment(fragment, Integer.parseInt(id.toString()));
+                Bundle bundle = new Bundle();
+                bundle.putInt("id", id); //Store object id into bundle.
+                activity.switchFragment(fragment, bundle);
             }
+
+
         };
 
         savedRecyclerViewAdapter = new SavedRecyclerViewAdapter(cardViewClickListener, getContext(), idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
@@ -75,7 +79,7 @@ public class SavedFragment extends Fragment {
 
         recyclerView.setAdapter(savedRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
 
 
         return binding.getRoot();

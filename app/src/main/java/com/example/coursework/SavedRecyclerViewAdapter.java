@@ -69,8 +69,8 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
     }
 
     public interface CardViewClickListener{
-        void onItemClick(Object id);
 
+        void onItemClick(int id);
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
