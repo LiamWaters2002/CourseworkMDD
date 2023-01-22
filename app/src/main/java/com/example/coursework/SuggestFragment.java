@@ -25,6 +25,7 @@ public class SuggestFragment extends Fragment {
     private Toolbar toolbar;
     private SuggestRecyclerViewAdapter suggestRecyclerViewAdapter;
     private LocationDatabase locationDatabase;
+    private ScheduleDatabase scheduleDatabase;
     private RecyclerView recyclerView;
 
     private ArrayList<Integer> idList;
@@ -70,12 +71,14 @@ public class SuggestFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState){
 
+        scheduleDatabase = new ScheduleDatabase(getContext());
         locationDatabase = new LocationDatabase(getContext());
         recyclerView = getView().findViewById(R.id.suggestRecyclerView);
 
         toolbar = getView().findViewById(R.id.suggestToolbar);
         Bundle bundle = this.getArguments();
         String time = bundle.get("time").toString();
+        String weatherPreference = bundle.get("weatherPreference").toString();
         toolbar.setTitle("Scheduler > " + time);
         toolbar.setTitleTextColor(Color.WHITE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -91,8 +94,10 @@ public class SuggestFragment extends Fragment {
 
         SuggestRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SuggestRecyclerViewAdapter.CardViewClickListener() {
             @Override
-            public void onItemClick(int id) {
-
+            public void onItemClick(int itemId) {
+                int id = itemId - 1;
+                scheduleDatabase.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id));
+                Toast.makeText(getContext(),"added to database", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -101,18 +106,22 @@ public class SuggestFragment extends Fragment {
         recyclerView.setAdapter(suggestRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        displayDatabase("all");
+        displayDatabase("all", weatherPreference);
 
     }
 
-    void displayDatabase(String placeType){
+    void displayDatabase(String placeType, String weatherPreference){
         suggestRecyclerViewAdapter.clearAll();
         Cursor cursor;
-        if(placeType.equals("all")){
-            cursor = locationDatabase.readDatabase();
-        }else{
-            cursor = locationDatabase.readDatabase(placeType);
-        }
+
+        WeatherTypes weatherTypes = new WeatherTypes();
+
+        Toast.makeText(getContext(), weatherPreference, Toast.LENGTH_SHORT).show();
+        cursor = locationDatabase.readDatabaseByWeather(weatherPreference);
+//            cursor = locationDatabase.readDatabaseByWeatherAndType(placeType, weatherPreference);
+
+
+
 
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();

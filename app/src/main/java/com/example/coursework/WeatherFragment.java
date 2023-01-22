@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +24,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutionException;
 
 public class WeatherFragment extends Fragment {
@@ -106,7 +99,7 @@ public class WeatherFragment extends Fragment {
 
             JSONArray values = london.getJSONArray("values");
 
-
+            WeatherTypes weatherTypes = new WeatherTypes();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
             LocalDate today = LocalDate.now();
 
@@ -120,7 +113,17 @@ public class WeatherFragment extends Fragment {
 
                 if(localDateTime.isEqual(today)){
                     dateList.add(dateTime.toString());
-                    weatherConditionsList.add(conditions.toString());
+                    String weatherPreference = conditions.toString();
+
+                    if(weatherTypes.isItClearWeatherType(weatherPreference)){
+                        weatherConditionsList.add("clear");
+                    }
+                    else if(weatherTypes.isItCloudWeatherType(weatherPreference)){
+                        weatherConditionsList.add("cloud");
+                    }
+                    else{
+                        weatherConditionsList.add("rain");
+                    }
                 }
 
             }
@@ -135,11 +138,12 @@ public class WeatherFragment extends Fragment {
 
         WeatherRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new WeatherRecyclerViewAdapter.CardViewClickListener() {
             @Override
-            public void onItemClick(String dateTime) {
+            public void onItemClick(String dateTime, String weatherPreference) {
                 Fragment fragment = new SuggestFragment();
                 MainActivity activity = (MainActivity) getActivity();
                 Bundle bundle = new Bundle();
                 bundle.putString("time", dateTime);
+                bundle.putString("weatherPreference", weatherPreference);
                 activity.switchFragment(fragment, bundle);
             }
         };

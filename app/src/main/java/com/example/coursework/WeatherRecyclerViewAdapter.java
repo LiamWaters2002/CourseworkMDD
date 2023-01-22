@@ -47,12 +47,10 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         String strWeatherCondition = weatherCondition.get(position);
         holder.conditionsTextView.setText(weatherCondition.get(position));
 
-        WeatherTypes weatherTypes = new WeatherTypes();
-
-        if(weatherTypes.isItClearWeatherType(strWeatherCondition)){
+        if(strWeatherCondition.equals("clear")){
             holder.imgWeather.setImageResource(R.drawable.clear);
         }
-        else if(weatherTypes.isItCloudWeatherType(strWeatherCondition)){
+        else if(strWeatherCondition.equals("cloud")){
             holder.imgWeather.setImageResource(R.drawable.cloud);
         }
         else{
@@ -62,7 +60,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
 
         holder.itemView.setOnClickListener(view -> {
 
-            cardViewClickListener.onItemClick(date.get(position));
+            cardViewClickListener.onItemClick(date.get(position), weatherCondition.get(position));
 
         });
     }
@@ -73,7 +71,7 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         }
 
     public interface CardViewClickListener{
-        void onItemClick(String id);
+        void onItemClick(String id, String s);
     }
 
     public class WeatherRecyclerViewHolder extends RecyclerView.ViewHolder {
