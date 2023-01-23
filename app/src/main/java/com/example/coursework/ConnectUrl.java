@@ -43,6 +43,7 @@ public class ConnectUrl {
             e.printStackTrace();
         }
         finally{
+
             inputStream.close();
             httpURLConnection.disconnect();
         }

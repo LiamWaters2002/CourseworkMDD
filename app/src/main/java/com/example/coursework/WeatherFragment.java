@@ -125,6 +125,9 @@ public class WeatherFragment extends Fragment {
                         weatherConditionsList.add("rain");
                     }
                 }
+                else{
+                    break;
+                }
 
             }
 

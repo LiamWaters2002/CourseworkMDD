@@ -230,7 +230,7 @@
     <TextView
         android:id="@+id/txtErrorMessage"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:textColor="#Ff0000"
         android:textSize="24sp"
         android:textStyle="bold" />

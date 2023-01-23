@@ -1,6 +1,7 @@
 package com.example.coursework;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,12 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     Context context;
     ArrayList<Integer> locationId, priority;
-    ArrayList<String>  locationName, weatherPreference, placeType;
+    ArrayList<String>  locationName, weatherPreference, placeType, dateList;
     ArrayList<Double> latitude, longitude;
 
 
     public ScheduleRecyclerViewAdapter(Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
-                                       ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType){
+                                       ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType, ArrayList<String> dateList){
         this.context = context;
         this.locationId = locationId;
         this.locationName = locationName;
@@ -29,6 +30,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         this.longitude = longitude;
         this.priority = priority;
         this.weatherPreference = weatherPreference;
+        this.dateList = dateList;
         this.placeType = placeType;
     }
 
@@ -52,9 +54,10 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
+//        holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
-        holder.txtLocationAddress.setText("Test");
+        holder.txtWeatherPreference.setText(Html.fromHtml("<b>Weather conditions: </b> " +  weatherPreference.get(position)));
+        holder.txtPriority.setText(Html.fromHtml("<b>Time:</b> " + dateList.get(position)));
 
 //        holder.itemView.setOnClickListener(view -> {
 //
@@ -77,13 +80,15 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
 
         TextView txtLocationId;
         TextView txtLocationName;
-        TextView txtLocationAddress;
+        TextView txtWeatherPreference;
+        TextView txtPriority;
 
         public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
-            txtLocationAddress = itemView.findViewById(R.id.txtWeatherPreference);
+            txtWeatherPreference = itemView.findViewById(R.id.txtWeatherPreference);
+            txtPriority = itemView.findViewById(R.id.txtPriority);
         }
     }
 

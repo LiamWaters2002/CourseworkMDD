@@ -31,6 +31,7 @@ public class ScheduleFragment extends Fragment {
     private ArrayList<Double> longitudeList;
     private ArrayList<Integer> priorityList;
     private ArrayList<String> weatherPreferenceList;
+    private ArrayList<String> dateList;
 
 
     public ScheduleFragment() {
@@ -50,6 +51,7 @@ public class ScheduleFragment extends Fragment {
         longitudeList = new ArrayList<>();
         priorityList = new ArrayList<>();
         weatherPreferenceList = new ArrayList<>();
+        dateList = new ArrayList<>();
         recyclerView = new RecyclerView(getContext());
         super.onCreate(savedInstanceState);
 
@@ -81,7 +83,7 @@ public class ScheduleFragment extends Fragment {
 //            }
 //        };
 
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList, dateList);
 
         recyclerView.setAdapter(scheduleRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -105,6 +107,8 @@ public class ScheduleFragment extends Fragment {
             latitudeList.add(Double.parseDouble(cursor.getString(3)));
             longitudeList.add(Double.parseDouble(cursor.getString(4)));
             longitudeList.add(Double.parseDouble(cursor.getString(4)));
+            dateList.add(cursor.getString(5));
+            weatherPreferenceList.add(cursor.getString(6));
         }
         scheduleRecyclerViewAdapter.notifyDataSetChanged();
     }

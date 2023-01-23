@@ -95,7 +95,8 @@ public class SuggestFragment extends Fragment {
             public void onItemClick(int id) {
                 Toast.makeText(getContext(), Integer.toString(id), Toast.LENGTH_SHORT).show();
                 ScheduleDatabase scheduleDatabase = new ScheduleDatabase(getContext());
-                scheduleDatabase.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id));
+
+                scheduleDatabase.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id), weatherPreference);
             }
         };
 
@@ -105,6 +106,10 @@ public class SuggestFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         displayDatabase(weatherPreference);
+        Toast.makeText(getContext(), Integer.toString(locationNameList.size()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), Integer.toString(latitudeList.size()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), Integer.toString(longitudeList.size()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), Integer.toString(placeTypeList.size()), Toast.LENGTH_SHORT).show();
 
     }
 

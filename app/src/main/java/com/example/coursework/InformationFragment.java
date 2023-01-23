@@ -2,16 +2,14 @@ package com.example.coursework;
 
 import static com.example.coursework.BuildConfig.MAPS_API_KEY;
 
-import android.app.Activity;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +22,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.IOException;
@@ -34,7 +30,6 @@ import java.net.URL;
 public class InformationFragment extends Fragment {
 
 
-    private TextView txtLocationId;
     private TextView txtLocationName;
     private TextView txtPlaceType;
     private TextView txtPriority;
@@ -72,6 +67,10 @@ public class InformationFragment extends Fragment {
     private TextView txtErrorMessage;
     private Button btnAddToDatabase;
     private RelativeLayout btnSave;
+
+    private ImageView imgWeatherPreference;
+    private ImageView imgPriority;
+    private ImageView imgPlaceType;
 
     private Button btnRemoveFromDatabase;
 
@@ -181,6 +180,12 @@ public class InformationFragment extends Fragment {
         btnLowSignpost.setVisibility(View.INVISIBLE);
         btnMediumSignpost.setVisibility(View.INVISIBLE);
         btnHighSignpost.setVisibility(View.INVISIBLE);
+
+
+        imgWeatherPreference = getView().findViewById(R.id.imgWeatherPreference);
+        imgPriority = getView().findViewById(R.id.imgPriority);
+        imgPlaceType = getView().findViewById(R.id.imgPlaceType);
+
 
         btnRemoveFromDatabase.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -302,31 +307,58 @@ public class InformationFragment extends Fragment {
             }
         });
 
-        txtLocationId = getView().findViewById(R.id.locationId);
         txtLocationName  = getView().findViewById(R.id.locationName);
-        txtPlaceType  = getView().findViewById(R.id.placeType);
-        txtPriority  = getView().findViewById(R.id.priority);
-        txtWeatherPreference  = getView().findViewById(R.id.weatherPreference);
+        txtPlaceType  = getView().findViewById(R.id.txtPlaceType);
+        txtPriority  = getView().findViewById(R.id.txtPriority);
+        txtWeatherPreference  = getView().findViewById(R.id.txtWeatherPreference);
 
-        txtLocationId.setText(Integer.toString(id));
         txtLocationName.setText(locationName);
 
-        if(txtLocationName.equals("tourist_attraction")){
-            txtPlaceType.setText("Tourist Attraction");
+        if(placeType.equals("tourist_attraction")){
+            txtPlaceType.setText(Html.fromHtml("<b>Place type:</b>  Tourist attraction"));
+            imgPlaceType.setImageResource(R.drawable.camera);
         }
-        else if(txtLocationName.equals("bar")){
-            txtPlaceType.setText("Bar");
+        else if(placeType.equals("bar")){
+            txtPlaceType.setText(Html.fromHtml("<b>Place type:</b>  Bar"));
+            imgPlaceType.setImageResource(R.drawable.bar);
         }
-        else if(txtLocationName.equals("night_club")){
-            txtPlaceType.setText("Night Club");
+        else if(placeType.equals("night_club")){
+            txtPlaceType.setText(Html.fromHtml("<b>Place type:</b>  Night club"));
+            imgPlaceType.setImageResource(R.drawable.discoball);
         }
-        else if(txtLocationName.equals("restaurant")){
-            txtPlaceType.setText("Restaurant");
+        else if(placeType.equals("restaurant")){
+            txtPlaceType.setText(Html.fromHtml("<b>Place type:</b>  Restaurant"));
+            imgPlaceType.setImageResource(R.drawable.cutlery);
         }
-        txtPlaceType.setText(placeType);
+
+        Toast.makeText(getContext(),Integer.toString(priority),Toast.LENGTH_SHORT).show();
+        if(priority == 1){
+            txtPriority.setText(Html.fromHtml("<b>Priority:</b> Low"));
+            imgPriority.setImageResource(R.drawable.low);
+        }
+        else if(priority == 2){
+            txtPriority.setText(Html.fromHtml("<b>Priority:</b> Medium"));
+            imgPriority.setImageResource(R.drawable.medium);
+        }
+        else if (priority == 3){
+            txtPriority.setText(Html.fromHtml("<b>Priority:</b> High"));
+            imgPriority.setImageResource(R.drawable.high);
+        }
+
 
         txtWeatherPreference.setText(weatherPreference);
-        txtPriority.setText(Integer.toString(priority));
+        if(weatherPreference.equals("clear")){
+            imgWeatherPreference.setImageResource(R.drawable.clear);
+            txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> Clear"));
+        }
+        else if(weatherPreference.equals("cloud")){
+            imgWeatherPreference.setImageResource(R.drawable.cloud);
+            txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> Cloud"));
+        }
+        else{
+            imgWeatherPreference.setImageResource(R.drawable.rain);
+            txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> Rain"));
+        }
 
         btnEdit = getView().findViewById(R.id.btnEdit);
         btnDelete = getView().findViewById(R.id.btnDelete);
@@ -372,7 +404,7 @@ public class InformationFragment extends Fragment {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().popBackStack();
+                getFragmentManager().popBackStack("saved", 1);
             }
         });
     }

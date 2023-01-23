@@ -19,6 +19,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
     private String COLUMN_LATITUDE = "latitude";
     private String COLUMN_LONGITUDE = "longitude";
     private String COLUMN_TIME = "time";
+    private String COLUMN_WEATHER_PREFERENCE = "weather_preference";
 
 
 
@@ -37,7 +38,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
                 COLUMN_TYPE + " TEXT, " +
                 COLUMN_LATITUDE + " REAL, " +
                 COLUMN_LONGITUDE + " REAL, " +
-                COLUMN_TIME + " STRING);";
+                COLUMN_TIME + " STRING, " +
+                COLUMN_WEATHER_PREFERENCE + " STRING);";
 
         sqLiteDatabase.execSQL(query);
     }
@@ -47,7 +49,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    void addLocation(String locationName, double latitude, double longitude, String time, String placeType){
+    void addLocation(String locationName, double latitude, double longitude, String time, String placeType, String weatherPreference){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -56,6 +58,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         contentValues.put(COLUMN_LONGITUDE, longitude);
         contentValues.put(COLUMN_TIME, time);
         contentValues.put(COLUMN_TYPE, placeType);
+        contentValues.put(COLUMN_WEATHER_PREFERENCE, weatherPreference);
         long result = sqLiteDatabase.insert(TABLE_NAME, null, contentValues);
         if(result == -1){
             Toast.makeText(context, "Fail adding to database", Toast.LENGTH_SHORT).show();

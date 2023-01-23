@@ -21,37 +21,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:id="@id/txtLocationId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:maxLines="1"
-                android:text="1"
-                android:textSize="30sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imgMarkerType"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </TextView>
-
             <ImageView
                 android:id="@+id/imgMarkerType"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_marker" />
+                app:srcCompat="@drawable/camera" />
 
             <TextView
                 android:id="@+id/txtLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
+                android:layout_marginStart="100dp"
                 android:layout_marginBottom="16dp"
                 android:maxLines="1"
                 android:text="Location Name"
@@ -59,7 +45,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/txtLocationId"
+                app:layout_constraintStart_toStartOf="@id/imgMarkerType"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

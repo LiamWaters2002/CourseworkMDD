@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,6 +30,13 @@ public class SavedFragment extends Fragment {
     private LinearLayout btnRestaurants;
     private LinearLayout btnBars;
     private LinearLayout btnNightClubs;
+
+    //Place Type Signposts
+    private ImageView btnAttractionsSignpost;
+    private ImageView btnRestaurantsSignpost;
+    private ImageView btnBarsSignpost;
+    private ImageView btnNightClubsSignpost;
+
 
     private LocationDatabase locationDatabase;
 
@@ -96,9 +104,20 @@ public class SavedFragment extends Fragment {
         btnBars = getView().findViewById(R.id.btnBars);
         btnNightClubs = getView().findViewById(R.id.btnNightClubs);
 
+        //Place Types Signposts
+        btnAttractionsSignpost = getView().findViewById(R.id.btnAttractionsSignpost);
+        btnRestaurantsSignpost = getView().findViewById(R.id.btnRestaurantsSignpost);
+        btnBarsSignpost = getView().findViewById(R.id.btnBarsSignpost);
+        btnNightClubsSignpost = getView().findViewById(R.id.btnNightClubsSignpost);
+
+        signPostsInvisible();
+        btnAttractionsSignpost.setVisibility(View.VISIBLE);
+
         btnAttractions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signPostsInvisible();
+                btnAttractionsSignpost.setVisibility(View.VISIBLE);
                 displayDatabase("tourist_attraction");
             }
         });
@@ -106,6 +125,8 @@ public class SavedFragment extends Fragment {
         btnRestaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signPostsInvisible();
+                btnRestaurantsSignpost.setVisibility(View.VISIBLE);
                 displayDatabase("restaurant");
             }
         });
@@ -113,6 +134,8 @@ public class SavedFragment extends Fragment {
         btnBars.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signPostsInvisible();
+                btnBarsSignpost.setVisibility(View.VISIBLE);
                 displayDatabase("bar");
             }
         });
@@ -120,11 +143,13 @@ public class SavedFragment extends Fragment {
         btnNightClubs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                signPostsInvisible();
+                btnNightClubsSignpost.setVisibility(View.VISIBLE);
                 displayDatabase("night_club");
             }
         });
 
-        displayDatabase("all");
+        displayDatabase("tourist_attraction");
     }
 
     void displayDatabase(String placeType){
@@ -152,5 +177,14 @@ public class SavedFragment extends Fragment {
         }
         savedRecyclerViewAdapter.notifyDataSetChanged();
     }
+
+    public void signPostsInvisible(){
+        //Set Place Type Signposts invisible
+        btnAttractionsSignpost.setVisibility(View.INVISIBLE);
+        btnRestaurantsSignpost.setVisibility(View.INVISIBLE);
+        btnBarsSignpost.setVisibility(View.INVISIBLE);
+        btnNightClubsSignpost.setVisibility(View.INVISIBLE);
+    }
+
 
 }

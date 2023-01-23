@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,17 +54,17 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
-        holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
+//        holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
         holder.txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> " + String.valueOf(weatherPreference.get(position))));
 
-        if(priority.equals("1")){
+        if(priority.get(position) == 1){
             holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> low"));
         }
-        else if(priority.equals("2")){
+        else if(priority.get(position) == 2 ){
             holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> medium"));
         }
-        else{
+        else if(priority.get(position) == 3){
             holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> high"));
         }
 
@@ -88,14 +89,14 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtLocationId;
+//        TextView txtLocationId;
         TextView txtLocationName;
         TextView txtWeatherPreference;
         TextView txtPriority;
 
         public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
-            txtLocationId = itemView.findViewById(R.id.txtLocationId);
+//            txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
             txtWeatherPreference = itemView.findViewById(R.id.txtWeatherPreference);
             txtPriority = itemView.findViewById(R.id.txtPriority);
