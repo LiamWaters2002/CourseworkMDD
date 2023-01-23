@@ -54,7 +54,7 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
-        holder.txtLocationAddress.setText("Test");
+        holder.txtLocationAddress.setText("Weather preference: " + String.valueOf(weatherPreference.get(position)));
 
         holder.itemView.setOnClickListener(view -> {
 
@@ -83,7 +83,7 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
-            txtLocationAddress = itemView.findViewById(R.id.txtAddress);
+            txtLocationAddress = itemView.findViewById(R.id.txtWeatherPreference);
         }
     }
 

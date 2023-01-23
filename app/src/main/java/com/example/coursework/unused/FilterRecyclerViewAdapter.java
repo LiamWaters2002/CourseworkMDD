@@ -66,7 +66,7 @@ public class FilterRecyclerViewAdapter extends RecyclerView.Adapter<FilterRecycl
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationType = itemView.findViewById(R.id.txtLocation);
-            txtLocationAddress = itemView.findViewById(R.id.txtAddress);
+            txtLocationAddress = itemView.findViewById(R.id.txtWeatherPreference);
         }
     }
 

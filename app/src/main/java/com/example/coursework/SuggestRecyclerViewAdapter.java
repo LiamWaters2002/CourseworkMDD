@@ -83,7 +83,7 @@ public class SuggestRecyclerViewAdapter extends RecyclerView.Adapter<SuggestRecy
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
-            txtLocationAddress = itemView.findViewById(R.id.txtAddress);
+            txtLocationAddress = itemView.findViewById(R.id.txtWeatherPreference);
         }
     }
 

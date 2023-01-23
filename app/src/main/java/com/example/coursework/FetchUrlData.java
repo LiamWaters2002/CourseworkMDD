@@ -23,9 +23,11 @@ public class FetchUrlData extends AsyncTask<Object, String, String> {
             JSONObject jsonObject = new JSONObject(s);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
 
+            //loop, getting name, location and creating a marker.
             for(int i=0; i<jsonArray.length();i++){
                 JSONObject jsonObj = jsonArray.getJSONObject(i);
-                JSONObject location = jsonObj.getJSONObject("geometry").getJSONObject("location");
+                JSONObject geometry = jsonObj.getJSONObject("geometry");
+                JSONObject location = geometry.getJSONObject("location");
 
                 String latitude = location.getString("lat");
                 String longitude = location.getString("lng");
