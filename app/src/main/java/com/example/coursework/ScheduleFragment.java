@@ -74,14 +74,14 @@ public class ScheduleFragment extends Fragment {
 
 
 
-        ScheduleRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new ScheduleRecyclerViewAdapter.CardViewClickListener() {
-            @Override
-            public void onItemClick(int id, String weatherPreference) {
+//        ScheduleRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new ScheduleRecyclerViewAdapter.CardViewClickListener() {
+//            @Override
+//            public void onItemClick(int id, String weatherPreference) {
+//
+//            }
+//        };
 
-            }
-        };
-
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(cardViewClickListener, getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList);
 
         recyclerView.setAdapter(scheduleRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

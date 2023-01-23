@@ -18,11 +18,10 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     ArrayList<Integer> locationId, priority;
     ArrayList<String>  locationName, weatherPreference, placeType;
     ArrayList<Double> latitude, longitude;
-    private CardViewClickListener cardViewClickListener;
 
-    public ScheduleRecyclerViewAdapter(CardViewClickListener cardViewClickListener, Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
+
+    public ScheduleRecyclerViewAdapter(Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
                                        ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType){
-        this.cardViewClickListener = cardViewClickListener;
         this.context = context;
         this.locationId = locationId;
         this.locationName = locationName;
@@ -57,11 +56,11 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
         holder.txtLocationAddress.setText("Test");
 
-        holder.itemView.setOnClickListener(view -> {
-
-            cardViewClickListener.onItemClick(locationId.get(position), weatherPreference.get(position));
-
-                });
+//        holder.itemView.setOnClickListener(view -> {
+//
+//            cardViewClickListener.onItemClick(locationId.get(position), weatherPreference.get(position));
+//
+//                });
     }
 
     @Override
@@ -69,10 +68,10 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         return locationId.size();
     }
 
-    public interface CardViewClickListener{
-
-        void onItemClick(int id, String weatherPreference);
-    }
+//    public interface CardViewClickListener{
+//
+//        void onItemClick(int id, String weatherPreference);
+//    }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 

@@ -1,6 +1,7 @@
 package com.example.coursework;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,19 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.txtLocationId.setText(String.valueOf(locationId.get(position)));
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
-        holder.txtLocationAddress.setText("Weather preference: " + String.valueOf(weatherPreference.get(position)));
+        holder.txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> " + String.valueOf(weatherPreference.get(position))));
+
+        if(priority.equals("1")){
+            holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> low"));
+        }
+        else if(priority.equals("2")){
+            holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> medium"));
+        }
+        else{
+            holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> high"));
+        }
+
+
 
         holder.itemView.setOnClickListener(view -> {
 
@@ -77,13 +90,15 @@ public class SavedRecyclerViewAdapter extends RecyclerView.Adapter<SavedRecycler
 
         TextView txtLocationId;
         TextView txtLocationName;
-        TextView txtLocationAddress;
+        TextView txtWeatherPreference;
+        TextView txtPriority;
 
         public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationId = itemView.findViewById(R.id.txtLocationId);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
-            txtLocationAddress = itemView.findViewById(R.id.txtWeatherPreference);
+            txtWeatherPreference = itemView.findViewById(R.id.txtWeatherPreference);
+            txtPriority = itemView.findViewById(R.id.txtPriority);
         }
     }
 
