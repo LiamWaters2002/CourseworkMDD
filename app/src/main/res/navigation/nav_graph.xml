@@ -22,6 +22,7 @@
         tools:layout="@layout/fragment_weather" />
     <fragment
         android:id="@+id/travelFragment"
-        android:name="com.example.coursework.TravelFragment"
-        android:label="TravelFragment" />
+        android:name="com.example.coursework.ScheduleFragment"
+        android:label="TravelFragment"
+        tools:layout="@layout/fragment_schedule" />
 </navigation>

@@ -76,6 +76,7 @@ public class SuggestFragment extends Fragment {
         toolbar = getView().findViewById(R.id.suggestToolbar);
         Bundle bundle = this.getArguments();
         String time = bundle.get("time").toString();
+        String weatherPreference = bundle.get("weatherPreference").toString();
         toolbar.setTitle("Scheduler > " + time);
         toolbar.setTitleTextColor(Color.WHITE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -103,7 +104,7 @@ public class SuggestFragment extends Fragment {
         recyclerView.setAdapter(suggestRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        displayDatabase("clear");
+        displayDatabase(weatherPreference);
 
     }
 

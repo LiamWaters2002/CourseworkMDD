@@ -106,7 +106,7 @@ public class SavedFragment extends Fragment {
         btnRestaurants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                displayDatabase("restauraunt");
+                displayDatabase("restaurant");
             }
         });
 

@@ -23,7 +23,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
 
     public ScheduleDatabase(@Nullable Context context){
-        super(context, "Schedule.db", null, 1);
+        super(context, "schedule.db", null, 1);
         this.context = context;
 
     }
@@ -44,7 +44,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        //sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
     void addLocation(String locationName, double latitude, double longitude, String time, String placeType){
@@ -65,8 +65,8 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         }
     }
 
-    protected Cursor readDatabase(String placeType){
-        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_TYPE + " = '" + placeType + "'";
+    protected Cursor readDatabase(){
+        String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         Cursor cursor = null;
