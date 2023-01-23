@@ -92,7 +92,9 @@ public class SuggestFragment extends Fragment {
         SuggestRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SuggestRecyclerViewAdapter.CardViewClickListener() {
             @Override
             public void onItemClick(int id) {
-
+                Toast.makeText(getContext(), Integer.toString(id), Toast.LENGTH_SHORT).show();
+                ScheduleDatabase scheduleDatabase = new ScheduleDatabase(getContext());
+                scheduleDatabase.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id));
             }
         };
 
