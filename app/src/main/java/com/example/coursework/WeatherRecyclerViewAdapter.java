@@ -65,13 +65,13 @@ public class WeatherRecyclerViewAdapter extends RecyclerView.Adapter<WeatherRecy
         });
     }
 
-        @Override
+    @Override
     public int getItemCount() {
         return weatherCondition.size();
-        }
+    }
 
     public interface CardViewClickListener{
-        void onItemClick(String id, String s);
+        void onItemClick(String id, String weatherCondition);
     }
 
     public class WeatherRecyclerViewHolder extends RecyclerView.ViewHolder {

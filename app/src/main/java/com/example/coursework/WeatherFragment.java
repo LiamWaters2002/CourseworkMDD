@@ -168,4 +168,3 @@ public class WeatherFragment extends Fragment {
 }
 
 
-

@@ -25,7 +25,6 @@ public class SuggestFragment extends Fragment {
     private Toolbar toolbar;
     private SuggestRecyclerViewAdapter suggestRecyclerViewAdapter;
     private LocationDatabase locationDatabase;
-    private ScheduleDatabase scheduleDatabase;
     private RecyclerView recyclerView;
 
     private ArrayList<Integer> idList;
@@ -71,14 +70,12 @@ public class SuggestFragment extends Fragment {
 
     public void onViewCreated(View view, Bundle savedInstanceState){
 
-        scheduleDatabase = new ScheduleDatabase(getContext());
         locationDatabase = new LocationDatabase(getContext());
         recyclerView = getView().findViewById(R.id.suggestRecyclerView);
 
         toolbar = getView().findViewById(R.id.suggestToolbar);
         Bundle bundle = this.getArguments();
         String time = bundle.get("time").toString();
-        String weatherPreference = bundle.get("weatherPreference").toString();
         toolbar.setTitle("Scheduler > " + time);
         toolbar.setTitleTextColor(Color.WHITE);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -94,10 +91,8 @@ public class SuggestFragment extends Fragment {
 
         SuggestRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new SuggestRecyclerViewAdapter.CardViewClickListener() {
             @Override
-            public void onItemClick(int itemId) {
-                int id = itemId - 1;
-                scheduleDatabase.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id));
-                Toast.makeText(getContext(),"added to database", Toast.LENGTH_SHORT).show();
+            public void onItemClick(int id) {
+
             }
         };
 
@@ -106,36 +101,26 @@ public class SuggestFragment extends Fragment {
         recyclerView.setAdapter(suggestRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        displayDatabase("all", weatherPreference);
+        displayDatabase("clear");
 
     }
 
-    void displayDatabase(String placeType, String weatherPreference){
+    void displayDatabase(String weatherCondition){
         suggestRecyclerViewAdapter.clearAll();
         Cursor cursor;
-
-        WeatherTypes weatherTypes = new WeatherTypes();
-
-        Toast.makeText(getContext(), weatherPreference, Toast.LENGTH_SHORT).show();
-        cursor = locationDatabase.readDatabaseByWeather(weatherPreference);
-//            cursor = locationDatabase.readDatabaseByWeatherAndType(placeType, weatherPreference);
-
-
-
+        cursor = locationDatabase.readByWeatherDatabase(weatherCondition);
 
         if(cursor.getCount() == 0){
             Toast.makeText(getContext(), "Database is empty", Toast.LENGTH_SHORT).show();
         }
         while(cursor.moveToNext()){
-            if(placeType.equals("all") || cursor.getString(2).equals(placeType)){
-                idList.add(Integer.parseInt(cursor.getString(0)));
-                locationNameList.add(cursor.getString(1));
-                placeTypeList.add(cursor.getString(2));
-                latitudeList.add(Double.parseDouble(cursor.getString(3)));
-                longitudeList.add(Double.parseDouble(cursor.getString(4)));
-                priorityList.add(Integer.parseInt(cursor.getString(5)));
-                weatherPreferenceList.add(cursor.getString(6));
-            }
+            idList.add(Integer.parseInt(cursor.getString(0)));
+            locationNameList.add(cursor.getString(1));
+            placeTypeList.add(cursor.getString(2));
+            latitudeList.add(Double.parseDouble(cursor.getString(3)));
+            longitudeList.add(Double.parseDouble(cursor.getString(4)));
+            priorityList.add(Integer.parseInt(cursor.getString(5)));
+            weatherPreferenceList.add(cursor.getString(6));
         }
         suggestRecyclerViewAdapter.notifyDataSetChanged();
     }
