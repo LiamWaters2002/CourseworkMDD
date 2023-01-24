@@ -10,7 +10,7 @@ import java.net.URL;
 
 public class ConnectUrl {
 
-    public String retrieveURL(String strUrl) throws IOException {
+    public String retrieveFromURL(String strUrl) throws IOException {
         String urlData = null;
         HttpURLConnection httpURLConnection = null;
         InputStream inputStream = null;

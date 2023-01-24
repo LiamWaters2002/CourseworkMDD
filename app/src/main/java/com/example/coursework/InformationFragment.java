@@ -3,6 +3,8 @@ package com.example.coursework;
 import static com.example.coursework.BuildConfig.MAPS_API_KEY;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -117,17 +119,17 @@ public class InformationFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        String streetViewUrl = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + latitude + "," + longitude + "&key=" + MAPS_API_KEY;
-
-        ImageView imageView = getView().findViewById(R.id.imgPhoto);
-        // Download the image from the URL
-        try {
-            URL url = new URL(streetViewUrl);
+//        String streetViewUrl = "https://maps.googleapis.com/maps/api/streetview?size=400x400&location=" + latitude + "," + longitude + "&key=" + MAPS_API_KEY;
+//
+//        ImageView imageView = getView().findViewById(R.id.imgPhoto);
+//        // Download the image from the URL
+//        try {
+//            URL url = new URL(streetViewUrl);
 //            Bitmap image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //            imageView.setImageBitmap(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         //BottomSheetDialog
         confirmBottomSheetDialog = new BottomSheetDialog(getContext());

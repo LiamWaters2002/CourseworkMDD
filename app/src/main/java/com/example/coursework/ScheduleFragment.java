@@ -1,14 +1,12 @@
 package com.example.coursework;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -68,7 +66,6 @@ public class ScheduleFragment extends Fragment {
     }
 
     public void onViewCreated(View view, Bundle savedInstanceState){
-
         scheduleDatabase = new ScheduleDatabase(getContext());
         recyclerView = getView().findViewById(R.id.scheduleRecyclerView);
 
@@ -76,14 +73,24 @@ public class ScheduleFragment extends Fragment {
 
 
 
-//        ScheduleRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new ScheduleRecyclerViewAdapter.CardViewClickListener() {
-//            @Override
-//            public void onItemClick(int id, String weatherPreference) {
-//
-//            }
-//        };
+        ScheduleRecyclerViewAdapter.CardViewClickListener cardViewClickListener = new ScheduleRecyclerViewAdapter.CardViewClickListener() {
+            @Override
+            public void onItemClick(int id, int position) {
+                scheduleDatabase.deleteRow(id);
 
-        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(getContext(),idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList, dateList);
+                idList.remove(position);
+                locationNameList.remove(position);
+                placeTypeList.remove(position);
+                latitudeList.remove(position);
+                longitudeList.remove(position);
+                longitudeList.remove(position);
+                dateList.remove(position);
+                weatherPreferenceList.remove(position);
+                scheduleRecyclerViewAdapter.notifyDataSetChanged();
+            }
+        };
+
+        scheduleRecyclerViewAdapter = new ScheduleRecyclerViewAdapter(cardViewClickListener ,idList, locationNameList, latitudeList, longitudeList, priorityList, weatherPreferenceList, placeTypeList, dateList);
 
         recyclerView.setAdapter(scheduleRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

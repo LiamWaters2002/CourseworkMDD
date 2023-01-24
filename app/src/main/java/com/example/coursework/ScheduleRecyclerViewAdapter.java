@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,9 +18,9 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     ArrayList<Integer> locationId, priority;
     ArrayList<String>  locationName, weatherPreference, placeType, dateList;
     ArrayList<Double> latitude, longitude;
+    CardViewClickListener cardViewClickListener;
 
-
-    public ScheduleRecyclerViewAdapter(Context context, ArrayList<Integer> locationId, ArrayList<String> locationName,
+    public ScheduleRecyclerViewAdapter(CardViewClickListener cardViewClickListener, ArrayList<Integer> locationId, ArrayList<String> locationName,
                                        ArrayList<Double> latitude, ArrayList<Double> longitude, ArrayList<Integer> priority, ArrayList<String> weatherPreference, ArrayList<String> placeType, ArrayList<String> dateList){
         this.context = context;
         this.locationId = locationId;
@@ -32,6 +31,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         this.weatherPreference = weatherPreference;
         this.dateList = dateList;
         this.placeType = placeType;
+        this.cardViewClickListener = cardViewClickListener;
     }
 
     public void clearAll(){
@@ -47,7 +47,7 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.recycler_view_row, parent, false);
         return new CustomViewHolder(view, context);
     }
@@ -59,11 +59,11 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         holder.txtWeatherPreference.setText(Html.fromHtml("<b>Weather conditions: </b> " +  weatherPreference.get(position)));
         holder.txtPriority.setText(Html.fromHtml("<b>Time:</b> " + dateList.get(position)));
 
-//        holder.itemView.setOnClickListener(view -> {
-//
-//            cardViewClickListener.onItemClick(locationId.get(position), weatherPreference.get(position));
-//
-//                });
+        holder.itemView.setOnClickListener(view -> {
+
+            cardViewClickListener.onItemClick(locationId.get(position), position);
+
+                });
     }
 
     @Override
@@ -71,10 +71,10 @@ public class ScheduleRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleRe
         return locationId.size();
     }
 
-//    public interface CardViewClickListener{
-//
-//        void onItemClick(int id, String weatherPreference);
-//    }
+    public interface CardViewClickListener{
+
+        void onItemClick(int id, int position);
+    }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 

@@ -1,10 +1,12 @@
 package com.example.coursework;
 
 import android.content.Context;
+import android.media.Image;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,6 +59,19 @@ public class SuggestRecyclerViewAdapter extends RecyclerView.Adapter<SuggestRecy
         holder.txtLocationName.setText(String.valueOf(locationName.get(position)));
         holder.txtWeatherPreference.setText(Html.fromHtml("<b>Weather preference:</b> " + String.valueOf(weatherPreference.get(position))));
 
+        if(placeType.get(position).equals("tourist_attraction")){
+            holder.imgPlaceType.setImageResource(R.drawable.camera);
+        }
+        else if(placeType.get(position).equals("bar")){
+            holder.imgPlaceType.setImageResource(R.drawable.bar);
+        }
+        else if(placeType.get(position).equals("night_club")){
+            holder.imgPlaceType.setImageResource(R.drawable.discoball);
+        }
+        else if(placeType.get(position).equals("restaurant")){
+            holder.imgPlaceType.setImageResource(R.drawable.cutlery);
+        }
+
         if(priority.get(position) == 1){
             holder.txtPriority.setText(Html.fromHtml("<b>Priority:</b> low"));
         }
@@ -88,13 +103,15 @@ public class SuggestRecyclerViewAdapter extends RecyclerView.Adapter<SuggestRecy
 
         TextView txtLocationName;
         TextView txtWeatherPreference;
+        ImageView imgPlaceType;
         TextView txtPriority;
 
         public CustomViewHolder(@NonNull View itemView, Context context) {
             super(itemView);
             txtLocationName = itemView.findViewById(R.id.txtLocation);
             txtWeatherPreference = itemView.findViewById(R.id.txtWeatherPreference);
-            txtPriority  = itemView.findViewById(R.id.txtPriority);
+            imgPlaceType  = itemView.findViewById(R.id.imgMarkerType);
+            txtPriority = itemView.findViewById(R.id.txtPriority);
         }
     }
 

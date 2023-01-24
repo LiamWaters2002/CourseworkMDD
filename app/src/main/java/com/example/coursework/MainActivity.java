@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
             transaction.setCustomAnimations(R.anim.enter_left, R.anim.enter_right);
             transaction.replace(R.id.informationLayout, fragment);
         }
+        else{
+
+        }
         transaction.commit();
     }
 }

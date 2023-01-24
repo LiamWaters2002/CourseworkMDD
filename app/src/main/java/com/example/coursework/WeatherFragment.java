@@ -128,9 +128,7 @@ public class WeatherFragment extends Fragment {
                 else{
                     break;
                 }
-
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

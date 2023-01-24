@@ -53,7 +53,7 @@ public class FetchUrlData extends AsyncTask<Object, String, String> {
         url = (String) objects[1];
         ConnectUrl useUrl = new ConnectUrl();
         try {
-            googleNearByPlacesData = useUrl.retrieveURL(url);
+            googleNearByPlacesData = useUrl.retrieveFromURL(url);
         } catch (IOException e) {
             e.printStackTrace();
         }
