@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="#EBEBEB"
     android:orientation="vertical"
-    tools:context=".InformationFragment">
+    tools:context=".InformationFragment"
+    >
 
     <RelativeLayout
         android:id="@+id/informationLayout"
@@ -37,14 +38,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Location Name"
+                    android:textColor="@color/black"
                     android:textSize="50sp"
                     android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/imgPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_location_on_24" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -69,10 +65,11 @@
                             android:id="@+id/txtPlaceType"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="PlaceType"
                             android:textAlignment="center"
-                            android:textSize="16sp"
-                            android:gravity="center"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -101,10 +98,11 @@
                             android:id="@+id/txtWeatherPreference"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="Weather Preference"
                             android:textAlignment="center"
-                            android:textSize="16sp"
-                            android:gravity="center"/>
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -137,6 +135,7 @@
                             android:layout_marginLeft="4dp"
                             android:gravity="center"
                             android:text="Priority"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -152,13 +151,15 @@
                 android:id="@+id/btnEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit" />
+                android:text="Edit"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnDelete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete" />
+                android:text="Delete"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

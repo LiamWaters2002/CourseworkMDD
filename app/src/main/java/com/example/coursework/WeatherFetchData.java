@@ -25,7 +25,7 @@ public class WeatherFetchData extends AsyncTask<String, Void, String> {
                 throw new IOException("Error with weatherAdapter.");
             }
             Scanner scanner = new Scanner(connection.getInputStream());
-            String data = scanner.useDelimiter("\\Z").next();
+            String data = scanner.useDelimiter("\\Z").next();//end of input
             scanner.close();
             return data;
         } catch (IOException e) {

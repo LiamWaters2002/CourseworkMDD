@@ -562,6 +562,7 @@ public class ExploreFragment extends Fragment {
 
         if (addressList.size() > 0) {
             Address address = addressList.get(0);//Get first location from the addressList
+            address.getCountryName();
 
             Log.d("Result", "Found a location: " + address.toString());
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());

@@ -36,6 +36,7 @@ public class WeatherFragment extends Fragment {
     private FragmentWeatherBinding binding;
     private FetchUrlData fetchUrlData;
     private ArrayList<String> weatherConditionsList, dateList;
+    private String city;
 
     @Override
     public View onCreateView(
@@ -54,25 +55,20 @@ public class WeatherFragment extends Fragment {
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                // Make use of the location object sent in the onLocationChanged(Location) callback.
                 Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
                 List<Address> addresses;
                 try {
                     addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
                     if (addresses.size() > 0) {
-                        String cityName = addresses.get(0).getLocality();
-                        //Do what you want with cityName
+                        city = addresses.get(0).getLocality();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         };
-// Register the listener with the Location Manager to receive location updates
 //        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 
@@ -83,19 +79,16 @@ public class WeatherFragment extends Fragment {
         WeatherFetchData weatherFetchData = new WeatherFetchData();
 
         //location and key
-        weatherFetchData.execute("London", "feb7abc8a7msh50b4159db41f088p16428bjsn5ad7bf336048");
+        weatherFetchData.execute(city, "feb7abc8a7msh50b4159db41f088p16428bjsn5ad7bf336048");
 
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(weatherFetchData.get().toString());
 
-//            TextView txtDate = getView().findViewById(R.id.text_date); //Fix
-//            TextView txtConditions = getView().findViewById(R.id.text_conditions);
-
             JSONObject locations = jsonObject.getJSONObject("locations");
 
 
-            JSONObject london = locations.getJSONObject("London");
+            JSONObject london = locations.getJSONObject(city);
 
             JSONArray values = london.getJSONArray("values");
 
