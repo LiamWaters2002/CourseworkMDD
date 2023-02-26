@@ -83,6 +83,7 @@ public class ScheduleDatabase extends SQLiteOpenHelper {
         String query = "DELETE FROM " +  TABLE_NAME + " WHERE " + COLUMN_ID + " = " + id;
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         sqLiteDatabase.execSQL(query);
+        Toast.makeText(context, "Deleted element", Toast.LENGTH_SHORT).show();
     }
 
     protected void deleteRow(String time){

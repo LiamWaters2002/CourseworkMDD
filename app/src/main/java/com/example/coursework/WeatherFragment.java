@@ -36,7 +36,7 @@ public class WeatherFragment extends Fragment {
     private FragmentWeatherBinding binding;
     private FetchUrlData fetchUrlData;
     private ArrayList<String> weatherConditionsList, dateList;
-    private String city;
+    private String city = "London";
 
     @Override
     public View onCreateView(
@@ -55,20 +55,20 @@ public class WeatherFragment extends Fragment {
 
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                    if (addresses.size() > 0) {
-                        city = addresses.get(0).getLocality();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+//        LocationListener locationListener = new LocationListener() {
+//            public void onLocationChanged(Location location) {
+//                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+//                List<Address> addresses;
+//                try {
+//                    addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                    if (addresses.size() > 0) {
+//                        city = addresses.get(0).getLocality();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        };
 //        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
 

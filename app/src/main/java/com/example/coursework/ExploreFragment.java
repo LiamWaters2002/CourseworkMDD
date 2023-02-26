@@ -392,7 +392,7 @@ public class ExploreFragment extends Fragment {
         double latitude = position.latitude;
         double longitude = position.longitude;
         database.addLocation(name, latitude, longitude, weatherPreference, priority, placeType);
-        Toast.makeText(getContext(),"added it to database", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(),"added to database", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -445,7 +445,7 @@ public class ExploreFragment extends Fragment {
             public boolean onMarkerClick(@NonNull Marker marker) {
                 markerSelected = marker;
                 marker.showInfoWindow();
-                Toast.makeText(getContext(), "Marker Selected", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Marker Selected", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

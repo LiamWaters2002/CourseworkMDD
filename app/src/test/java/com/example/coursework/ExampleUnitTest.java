@@ -15,10 +15,10 @@ import static org.junit.Assert.*;
 
 
 public class ExampleUnitTest {
-    SuggestFragment suggestFragment = new SuggestFragment();
-
-    @Test
-    public void testListSizesAreEqual() {
+//    SuggestFragment suggestFragment = new SuggestFragment();
+//
+//    @Test
+//    public void testListSizesAreEqual() {
 //
 //        suggestFragment.suggestRecyclerViewAdapter.addLocation(locationNameList.get(id), latitudeList.get(id), longitudeList.get(id), time, placeTypeList.get(id), weatherPreference);
 //
@@ -31,5 +31,5 @@ public class ExampleUnitTest {
 //        assertEquals(locationNameListSize, longitudeListSize);
 //        assertEquals(locationNameListSize, placeTypeListSize);
 //    }
-}
+//}
 }

@@ -333,7 +333,7 @@ public class InformationFragment extends Fragment {
             imgPlaceType.setImageResource(R.drawable.cutlery);
         }
 
-        Toast.makeText(getContext(),Integer.toString(priority),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(),Integer.toString(priority),Toast.LENGTH_SHORT).show();
         if(priority == 1){
             txtPriority.setText(Html.fromHtml("<b>Priority:</b> Low"));
             imgPriority.setImageResource(R.drawable.low);
