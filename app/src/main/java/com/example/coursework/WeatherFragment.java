@@ -93,9 +93,8 @@ public class WeatherFragment extends Fragment {
             JSONArray values = london.getJSONArray("values");
 
             WeatherTypes weatherTypes = new WeatherTypes();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssXXX");
             LocalDate today = LocalDate.now();
-
 
             for (int i = 0; i < values.length(); i++) {
                 JSONObject day = values.getJSONObject(i);
@@ -104,7 +103,7 @@ public class WeatherFragment extends Fragment {
 
                 LocalDate localDateTime = LocalDate.parse(dateTime, formatter);
 
-                if(localDateTime.isEqual(today)){
+                if (localDateTime.isEqual(today)) {
                     dateList.add(dateTime.toString());
                     String weatherPreference = conditions.toString();
 
@@ -144,7 +143,7 @@ public class WeatherFragment extends Fragment {
 
         WeatherRecyclerViewAdapter weatherRecyclerViewAdapter = new WeatherRecyclerViewAdapter(cardViewClickListener, getContext(), weatherConditionsList, dateList);
 
-        RecyclerView weatherRecyclerView = getView().findViewById(R.id.recyclerView);
+        RecyclerView weatherRecyclerView = view.findViewById(R.id.recyclerView);
         weatherRecyclerView.setAdapter(weatherRecyclerViewAdapter);
         weatherRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

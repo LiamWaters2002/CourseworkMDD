@@ -29,6 +29,9 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.coursework.FetchUrlData;
+import com.example.coursework.LocationDatabase;
+import com.example.coursework.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -111,7 +114,7 @@ public class TravelFragment extends Fragment {
         btnAttractions = getView().findViewById(R.id.btnAttractions);
         btnRestaurants = getView().findViewById(R.id.btnRestaurants);
         btnBars = getView().findViewById(R.id.btnBars);
-        btnNightClubs = getView().findViewById(R.id.btnNightClub);
+        btnNightClubs = getView().findViewById(R.id.btnNightClubs);
         btnRemove = getView().findViewById(R.id.ic_remove);
 
         btnRemove.setOnClickListener(new View.OnClickListener() {
@@ -200,7 +203,7 @@ public class TravelFragment extends Fragment {
         double longitude = position.longitude;
         String weatherPreference = "Weather preference needs to be implemented";
         int priority = 0;
-        database.addLocation(name, latitude, longitude, weatherPreference, priority);
+        database.addLocation(name, latitude, longitude, weatherPreference, priority, "");
     }
 
     /**

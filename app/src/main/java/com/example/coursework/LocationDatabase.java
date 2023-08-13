@@ -49,7 +49,7 @@ public class LocationDatabase extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
     }
 
-    void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority, String placeType){
+    public void addLocation(String locationName, double latitude, double longitude, String weatherPreference, int priority, String placeType){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
